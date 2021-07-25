@@ -10,8 +10,11 @@ namespace NetCORE_Api.Texts
     {
         public Calculate PostAll(Calculate cal)
         {
-            cal.Label += cal.TextboxFirst;
-            cal.TextboxFirst = string.Empty;
+            if (cal.Button == "=")
+            {
+                cal.Label += cal.TextboxFirst;
+                cal.TextboxFirst = string.Empty;
+            }
 
             return cal;
         }

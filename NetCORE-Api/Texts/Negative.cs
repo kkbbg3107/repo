@@ -12,8 +12,11 @@ namespace NetCORE_Api.Texts
 
         public Calculate PostAll(Calculate cal)
         {
-            cal.TextboxFirst = "(" + cal.TextboxFirst.Insert(0, "-") + ")";
-
+            if (cal.Button == "+/-")
+            {
+                cal.TextboxFirst = "(" + cal.TextboxFirst.Insert(0, "-") + ")";
+            }
+            
             return cal;
         }
     }

@@ -10,7 +10,7 @@ namespace NetCORE_Api.Texts
     {
         public Calculate PostAll(Calculate cal)
         {
-            if (cal.TextboxFirst != string.Empty)
+            if (cal.Button == "Back" && cal.TextboxFirst != string.Empty)
             {
                 cal.TextboxFirst = cal.TextboxFirst.Substring(0, cal.TextboxFirst.Length - 1);
             }

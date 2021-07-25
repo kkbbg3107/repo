@@ -10,7 +10,10 @@ namespace NetCORE_Api.Texts
     {
         public Calculate PostAll(Calculate cal)
         {
-            cal.Label += cal.Button;
+            if (cal.Button == "(")
+            {
+                cal.Label += cal.Button;
+            }
 
             return cal;
         }

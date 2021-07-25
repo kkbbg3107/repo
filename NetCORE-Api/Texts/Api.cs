@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Texts
 {
-    public class Api
+    public class Api :IFactory
     {
 
         /// <summary>
@@ -428,20 +428,22 @@ namespace NetCORE_Api.Texts
 
         public Calculate PostAll(Calculate cal)
         {
-    
-            var p = ToListService(cal.Label);
-            var postList = ToPostfix(p); // 後序表達式
-            var result = PostfixToNum(postList); // 運算結果
-            Response data = new Response();
-            var postfix = string.Join(",", postList.ToArray());
-            var prefix = PostfixToPrefix(postList);
+            if (cal.Button == "api")
+            {
+                var p = ToListService(cal.Label);
+                var postList = ToPostfix(p); // 後序表達式
+                var result = PostfixToNum(postList); // 運算結果
+                Response data = new Response();
+                var postfix = string.Join(",", postList.ToArray());
+                var prefix = PostfixToPrefix(postList);
 
-            data.Prefix = prefix;
-            data.Formula = cal.Label;
-            data.Postfix = postfix;
-            data.Result = result;
+                data.Prefix = prefix;
+                data.Formula = cal.Label;
+                data.Postfix = postfix;
+                data.Result = result;
 
-            cal.TextboxResult = $"PostFix : {data.Postfix}, Formula : {data.Formula}, Prefix : {data.Prefix}, Result : {data.Result}";
+                cal.TextboxResult = $"PostFix : {data.Postfix}, Formula : {data.Formula}, Prefix : {data.Prefix}, Result : {data.Result}";
+            }
             return cal;
         }
     }

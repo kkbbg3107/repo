@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Texts
 {
-    public class SquareRoot 
+    public class SquareRoot : IFactory
     {
         public Calculate PostAll(Calculate cal)
         {
-            if (double.TryParse(cal.TextboxFirst, out var number))
+            if (cal.Button == "√" && double.TryParse(cal.TextboxFirst, out var number))
             {
                 cal.TextboxFirst = Math.Sqrt(number).ToString();
             }

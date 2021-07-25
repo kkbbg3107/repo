@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NetCORE_Api;
 using NetCORE_Api.interFace;
+using NetCORE_Api.Texts;
 
 namespace WebApi
 {
@@ -34,9 +35,18 @@ namespace WebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
-            
-            services.AddScoped<IFactory, SimpleFactory>();   
-            
+
+            services.TryDecorate<IFactory, Operator>();
+            services.TryDecorate<IFactory, Back>();
+            services.TryDecorate<IFactory, Dot>();
+            services.TryDecorate<IFactory, Equal>();
+            services.TryDecorate<IFactory, LeftMark>();
+            services.TryDecorate<IFactory, RightMark>();
+            services.TryDecorate<IFactory, SquareRoot>();
+            services.TryDecorate<IFactory, Api>();
+            services.TryDecorate<IFactory, Negative>();
+            services.TryDecorate<IFactory, Clear>();
+            services.TryDecorate<IFactory, Num>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
