@@ -37,9 +37,9 @@ namespace postfixCal
         /// <param name="sender">引發事件的物件</param>
         /// <param name="e">事件的額外細項</param>
         private void ButtonClick(object sender, EventArgs e)
-        {            
+        {
             Button btn = sender as Button;
-             
+
             var cal = new Calculate()
             {
                 Button = btn.Text,
@@ -48,7 +48,8 @@ namespace postfixCal
                 TextboxResult = TextBoxApi.Text,
             };
 
-            string json = JsonConvert.SerializeObject(cal);
+
+            string json = JsonConvert.SerializeObject(cal.Button);
 
             HttpContent contentPost = new StringContent(json, Encoding.UTF8, "application/json"); // 定義json內容
 
