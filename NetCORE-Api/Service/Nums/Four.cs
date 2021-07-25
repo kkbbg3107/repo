@@ -1,17 +1,17 @@
-﻿using ClassLibrary1.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClassLibrary1.Model;
 
-namespace NetCORE_Api.Texts
+namespace NetCORE_Api.Service.Nums
 {
-    public class LeftMark : IFactory
+    public class Four:IFactory
     {
         public Calculate PostAll(Calculate cal)
         {
-            cal.Label += cal.Button;
 
+            cal.TextboxFirst += cal.Button;
             return cal;
         }
     }

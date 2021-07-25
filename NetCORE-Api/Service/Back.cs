@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCORE_Api.Texts
+namespace NetCORE_Api.Service
 {
-    public class Dot : IFactory
+    public class Back : IFactory
     {
         public Calculate PostAll(Calculate cal)
         {
-            if (!cal.TextboxFirst.Contains("."))
+            if (cal.TextboxFirst != string.Empty)
             {
-                cal.TextboxFirst += cal.Button;
+                cal.TextboxFirst = cal.TextboxFirst.Substring(0, cal.TextboxFirst.Length - 1);
             }
 
             return cal;

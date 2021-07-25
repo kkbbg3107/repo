@@ -1,18 +1,19 @@
 ﻿using ClassLibrary1.Model;
-using NetCORE_Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCORE_Api.Texts
+namespace NetCORE_Api.Service
 {
-    public class Negative : IFactory
+    public class Dot : IFactory
     {
-
         public Calculate PostAll(Calculate cal)
         {
-            cal.TextboxFirst = "(" + cal.TextboxFirst.Insert(0, "-") + ")";
+            if (!cal.TextboxFirst.Contains("."))
+            {
+                cal.TextboxFirst += cal.Button;
+            }
 
             return cal;
         }

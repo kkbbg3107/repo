@@ -5,16 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCORE_Api.Texts
+namespace NetCORE_Api.Service
 {
-    public class SquareRoot 
+    public class Negative : IFactory
     {
+
         public Calculate PostAll(Calculate cal)
         {
-            if (double.TryParse(cal.TextboxFirst, out var number))
-            {
-                cal.TextboxFirst = Math.Sqrt(number).ToString();
-            }
+            cal.TextboxFirst = "(" + cal.TextboxFirst.Insert(0, "-") + ")";
 
             return cal;
         }
