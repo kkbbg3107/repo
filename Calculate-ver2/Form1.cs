@@ -44,8 +44,8 @@ namespace postfixCal
             {
                 Button = btn.Text,
                 Label = lblText.Text,
-                TextboxFirst = textBox3.Text,
-                TextboxResult = textBox2.Text,
+                TextboxFirst = textBox_First.Text,
+                TextboxResult = TextBoxApi.Text,
             };
 
             string json = JsonConvert.SerializeObject(cal);
@@ -61,8 +61,8 @@ namespace postfixCal
             var result = JsonConvert.DeserializeObject<Calculate>(ans);
 
             // 控制向改變狀態
-            textBox2.Text = result.TextboxResult;
-            textBox3.Text = result.TextboxFirst;
+            TextBoxApi.Text = result.TextboxResult;
+            textBox_First.Text = result.TextboxFirst;
             lblText.Text = result.Label;
             btn.Text = result.Button;
         }

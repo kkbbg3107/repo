@@ -9,7 +9,7 @@ using NetCORE_Api;
 using NetCORE_Api.Service;
 using NetCORE_Api.Service.Nums;
 
-namespace WebApi.ApiController
+namespace NetCORE_Api.ApiController
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,11 +21,17 @@ namespace WebApi.ApiController
         private readonly ILogger<CalculateController> _logger;
 
         /// <summary>
+        /// 建立私有欄位
+        /// </summary>
+        private  IFactory _all;
+
+        /// <summary>
         /// 建立相依
         /// </summary>
         /// <param name="logger">檢查api輸入正確性</param>
-        public CalculateController(ILogger<CalculateController> logger)
+        public CalculateController(IFactory all,ILogger<CalculateController> logger)
         {
+            this._all = all;
             this._logger = logger;
         }
 
@@ -71,8 +77,8 @@ namespace WebApi.ApiController
             };
 
             // 依賴助入服務
-            IFactory factory =  d[cal.Button];
-            var result = factory.PostAll(cal);
+            _all =  d[cal.Button];
+            var result = _all.PostAll(cal);
 
             return result;
         }

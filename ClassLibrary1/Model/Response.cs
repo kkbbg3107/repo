@@ -10,8 +10,6 @@ namespace ClassLibrary1.Model
     /// </summary>
     public class Response
     {
-        public string Text { get; set; }
-
         // 後序表達式
         public string Postfix { get; set; }
 
@@ -23,12 +21,5 @@ namespace ClassLibrary1.Model
 
         // 運算結果
         public string Result { get; set; }
-
-        /// <summary>
-        /// 繼承單一子類 方便回傳整包資料
-        /// </summary>
-        //public class NumSingleResult : 
-        //{
-        //}
     }
 }

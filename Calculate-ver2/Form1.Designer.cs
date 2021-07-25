@@ -49,8 +49,8 @@ namespace postfixCal
             this.button19 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button20 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.TextBoxApi = new System.Windows.Forms.TextBox();
+            this.textBox_First = new System.Windows.Forms.TextBox();
             this.btnequ = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
@@ -314,19 +314,19 @@ namespace postfixCal
             this.button20.UseVisualStyleBackColor = true;
             this.button20.Click += new System.EventHandler(this.ButtonClick);
             // 
-            // textBox2
+            // TextBoxApi
             // 
-            this.textBox2.Location = new System.Drawing.Point(77, 22);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(552, 35);
-            this.textBox2.TabIndex = 23;
+            this.TextBoxApi.Location = new System.Drawing.Point(77, 22);
+            this.TextBoxApi.Name = "TextBoxApi";
+            this.TextBoxApi.Size = new System.Drawing.Size(552, 35);
+            this.TextBoxApi.TabIndex = 23;
             // 
-            // textBox3
+            // textBox_First
             // 
-            this.textBox3.Location = new System.Drawing.Point(73, 168);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(552, 35);
-            this.textBox3.TabIndex = 24;
+            this.textBox_First.Location = new System.Drawing.Point(73, 168);
+            this.textBox_First.Name = "textBox_First";
+            this.textBox_First.Size = new System.Drawing.Size(552, 35);
+            this.textBox_First.TabIndex = 24;
             // 
             // btnequ
             // 
@@ -390,8 +390,8 @@ namespace postfixCal
             this.Controls.Add(this.button11);
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.btnequ);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox_First);
+            this.Controls.Add(this.TextBoxApi);
             this.Controls.Add(this.button20);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button19);
@@ -443,8 +443,8 @@ namespace postfixCal
         private System.Windows.Forms.Button button19;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button20;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox TextBoxApi;
+        private System.Windows.Forms.TextBox textBox_First;
         private System.Windows.Forms.Button btnequ;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.Button button11;
