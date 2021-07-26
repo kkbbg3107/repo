@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class LeftMark : IFactory
+    public class LeftMark
     {
         public Calculate PostAll(Calculate cal)
         {

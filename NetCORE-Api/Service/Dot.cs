@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class Dot : IFactory
+    public class Dot
     {
         public Calculate PostAll(Calculate cal)
         {

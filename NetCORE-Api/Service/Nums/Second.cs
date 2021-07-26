@@ -8,11 +8,13 @@ namespace NetCORE_Api.Service.Nums
 {
     public class Second:IFactory
     {
-        public Calculate PostAll(Calculate cal)
+        public Calculate PostAll(string cal)
         {
+            Record r = new Record();
+            Calculate c = new Calculate(new Record());
 
-            cal.TextboxFirst += cal.Button;
-            return cal;
+            r.Btn += cal;
+            return c;
         }
     }
 }

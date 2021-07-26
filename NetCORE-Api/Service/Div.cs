@@ -6,7 +6,7 @@ using ClassLibrary1.Model;
 
 namespace NetCORE_Api.Service
 {
-    public class Div :IFactory
+    public class Div 
     {
         public Calculate PostAll(Calculate cal)
         {

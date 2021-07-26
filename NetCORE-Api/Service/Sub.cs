@@ -6,13 +6,14 @@ using ClassLibrary1.Model;
 
 namespace NetCORE_Api.Service
 {
-    public class Sub :IFactory
+    public class Sub 
     {
         public Calculate PostAll(Calculate cal)
         {
 
             try
             {
+                //Calculate cal = new Calculate();
                 cal.Label += cal.TextboxFirst;
 
                 if (IsFirstMark(cal))

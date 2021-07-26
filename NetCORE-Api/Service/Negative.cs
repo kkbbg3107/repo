@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class Negative : IFactory
+    public class Negative
     {
 
         public Calculate PostAll(Calculate cal)

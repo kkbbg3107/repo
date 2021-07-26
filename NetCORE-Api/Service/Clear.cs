@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class Clear : IFactory
+    public class Clear 
     {
 
         public Calculate PostAll(Calculate cal)

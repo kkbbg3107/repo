@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class Api : IFactory
+    public class Api 
     {
 
         /// <summary>

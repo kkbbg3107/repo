@@ -6,7 +6,7 @@ using ClassLibrary1.Model;
 
 namespace NetCORE_Api.Service
 {
-    public class Plus : IFactory
+    public class Plus
     {
         public Calculate PostAll(Calculate cal)
         {

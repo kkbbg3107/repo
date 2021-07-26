@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class SquareRoot :IFactory
+    public class SquareRoot 
     {
         public Calculate PostAll(Calculate cal)
         {

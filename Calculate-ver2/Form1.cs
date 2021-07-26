@@ -38,15 +38,17 @@ namespace postfixCal
         /// <param name="e">事件的額外細項</param>
         private void ButtonClick(object sender, EventArgs e)
         {
+            var cal = new Calculate(new Record());
             Button btn = sender as Button;
+            cal.Button = btn.Text;
 
-            var cal = new Calculate()
-            {
-                Button = btn.Text,
-                Label = lblText.Text,
-                TextboxFirst = textBox_First.Text,
-                TextboxResult = TextBoxApi.Text,
-            };
+            //var cal = new Calculate()
+            //{
+            //    Button = btn.Text,
+            //    Label = lblText.Text,
+            //    TextboxFirst = textBox_First.Text,
+            //    TextboxResult = TextBoxApi.Text,
+            //};
 
 
             string json = JsonConvert.SerializeObject(cal.Button);
@@ -63,7 +65,7 @@ namespace postfixCal
 
             // 控制向改變狀態
             TextBoxApi.Text = result.TextboxResult;
-            textBox_First.Text = result.TextboxFirst;
+            textBox_First.Text += result.TextboxFirst;
             lblText.Text = result.Label;
             btn.Text = result.Button;
         }
