@@ -25,13 +25,14 @@ namespace NetCORE_Api.ApiController
         /// </summary>
         private IFactory _all;
 
+        private IReadOnlyDictionary<string, IFactory> _dictionary;
         /// <summary>
         /// 建立相依
         /// </summary>
         /// <param name="logger">檢查api輸入正確性</param>
-        public CalculateController(IFactory all, ILogger<CalculateController> logger)
+        public CalculateController(IReadOnlyDictionary<string, IFactory> dictionary, ILogger<CalculateController> logger)
         {
-            this._all = all;
+            this._dictionary = dictionary;
             this._logger = logger;
         }
 
@@ -49,7 +50,7 @@ namespace NetCORE_Api.ApiController
             _logger.LogWarning(2001, inform.ToString());
 
             // 建立字典讀取指定按紐實作
-            Dictionary<string, IFactory> d = new Dictionary<string, IFactory>()
+            IReadOnlyDictionary<string, IFactory> d = new Dictionary<string, IFactory>()
             {
                 { "api", new Api() },
                 { "Back", new Back() },
@@ -77,7 +78,8 @@ namespace NetCORE_Api.ApiController
             };
 
             // 依賴注入服務
-            _all = d[calButton];
+            _dictionary = d;
+            _all = _dictionary[calButton];
             var result = _all.PostAll(calButton);
             
             return result;

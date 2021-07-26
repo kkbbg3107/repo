@@ -36,29 +36,30 @@ namespace WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
 
-            services.AddScoped<IFactory, Api>();
-            services.AddScoped<IFactory, Back>();
-            services.AddScoped<IFactory, Clear>();
-            services.AddScoped<IFactory, Dot>();
-            services.AddScoped<IFactory, Div>();
-            services.AddScoped<IFactory, Multi>();
-            services.AddScoped<IFactory, Plus>();
-            services.AddScoped<IFactory, Sub>();
-            services.AddScoped<IFactory, Negative>();
-            services.AddScoped<IFactory, SquareRoot>();
-            services.AddScoped<IFactory, LeftMark>();
-            services.AddScoped<IFactory, RightMark>();
-            services.AddScoped<IFactory, Equal>();
-            services.AddScoped<IFactory, Zero>();
-            services.AddScoped<IFactory, One>();
-            services.AddScoped<IFactory, Second>();
-            services.AddScoped<IFactory, Three>();
-            services.AddScoped<IFactory, Four>();
-            services.AddScoped<IFactory, Five>();
-            services.AddScoped<IFactory, Six>();
-            services.AddScoped<IFactory, Seven>();
-            services.AddScoped<IFactory, Eight>();
-            services.AddScoped<IFactory, Nine>();
+            services.AddSingleton<IReadOnlyDictionary<string, IFactory>>(new Dictionary<string, IFactory>());
+            //services.AddScoped<IFactory, Api>();
+            //services.AddScoped<IFactory, Back>();
+            //services.AddScoped<IFactory, Clear>();
+            //services.AddScoped<IFactory, Dot>();
+            //services.AddScoped<IFactory, Div>();
+            //services.AddScoped<IFactory, Multi>();
+            //services.AddScoped<IFactory, Plus>();
+            //services.AddScoped<IFactory, Sub>();
+            //services.AddScoped<IFactory, Negative>();
+            //services.AddScoped<IFactory, SquareRoot>();
+            //services.AddScoped<IFactory, LeftMark>();
+            //services.AddScoped<IFactory, RightMark>();
+            //services.AddScoped<IFactory, Equal>();
+            //services.AddScoped<IFactory, Zero>();
+            //services.AddScoped<IFactory, One>();
+            //services.AddScoped<IFactory, Second>();
+            //services.AddScoped<IFactory, Three>();
+            //services.AddScoped<IFactory, Four>();
+            //services.AddScoped<IFactory, Five>();
+            //services.AddScoped<IFactory, Six>();
+            //services.AddScoped<IFactory, Seven>();
+            //services.AddScoped<IFactory, Eight>();
+            //services.AddScoped<IFactory, Nine>();
 
         }
 
