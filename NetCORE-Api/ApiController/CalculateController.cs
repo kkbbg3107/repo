@@ -25,13 +25,14 @@ namespace NetCORE_Api.ApiController
         /// </summary>
         private  IFactory _all;
 
+        private Dictionary<string, IFactory> _dictionary;
         /// <summary>
         /// 建立相依
         /// </summary>
         /// <param name="logger">檢查api輸入正確性</param>
-        public CalculateController(IFactory all,ILogger<CalculateController> logger)
+        public CalculateController(Dictionary<string, IFactory> dictionary, ILogger<CalculateController> logger)
         {
-            this._all = all;
+            this._dictionary = dictionary;
             this._logger = logger;
         }
 
@@ -77,7 +78,8 @@ namespace NetCORE_Api.ApiController
             };
 
             // 依賴助入服務
-            _all =  d[cal.Button];
+            _dictionary = d;
+            _all = _dictionary[cal.Button];
             var result = _all.PostAll(cal);
 
             return result;
