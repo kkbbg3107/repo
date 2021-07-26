@@ -8,6 +8,11 @@ namespace NetCORE_Api.Service
 {
     public class Back : IFactory
     {
+        /// <summary>
+        /// 實作按鈕 Back
+        /// </summary>
+        /// <param name="cal">按鈕text = Back</param>
+        /// <returns>控制項成員</returns>
         public Calculate PostAll(string cal)
         {
             Calculate c = new Calculate();

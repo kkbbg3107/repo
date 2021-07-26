@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class Clear :IFactory
+    public class Clear : IFactory
     {
-
+        /// <summary>
+        /// 實作按鈕 clear 清空UI
+        /// </summary>
+        /// <param name="cal">按鈕text = C</param>
+        /// <returns>前端控制項皆string.empty</returns>
         public Calculate PostAll(string cal)
         {
             Record.Btn = cal;

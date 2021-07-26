@@ -23,13 +23,13 @@ namespace NetCORE_Api.ApiController
         /// <summary>
         /// 建立私有欄位
         /// </summary>
-        private  IFactory _all;
+        private IFactory _all;
 
         /// <summary>
         /// 建立相依
         /// </summary>
         /// <param name="logger">檢查api輸入正確性</param>
-        public CalculateController(IFactory all,ILogger<CalculateController> logger)
+        public CalculateController(IFactory all, ILogger<CalculateController> logger)
         {
             this._all = all;
             this._logger = logger;
@@ -51,36 +51,36 @@ namespace NetCORE_Api.ApiController
             // 建立字典讀取指定按紐實作
             Dictionary<string, IFactory> d = new Dictionary<string, IFactory>()
             {
-                //{"api", new Api()},
-                {"Back", new Back()},
-                {"C", new Clear()},
-                {".", new Dot()},
-                {"+", new Plus()},
-                {"-", new Sub()},
-                {"*", new Multi()},
-                {"/", new Div()},
-                //{"=", new Equal()},
-                {"+/-", new Negative()},
-                {"(", new LeftMark()},
-                {")", new RightMark()},
-                {"√", new SquareRoot()},
-                {"0", new Zero()},
-                {"1", new One()},
-                {"2", new Second()},
-                {"3", new Three()},
-                {"4", new Four()},
-                {"5", new Five()},
-                {"6", new Six()},
-                {"7", new Seven()},
-                {"8", new Eight()},
-                {"9", new Nine()},
+                { "api", new Api() },
+                { "Back", new Back() },
+                { "C", new Clear() },
+                { ".", new Dot() },
+                { "+", new Plus() },
+                { "-", new Sub() },
+                { "*", new Multi() },
+                { "/", new Div() },
+                { "=", new Equal() },
+                { "+/-", new Negative() },
+                { "(", new LeftMark() },
+                { ")", new RightMark() },
+                { "√", new SquareRoot() },
+                { "0", new Zero() },
+                { "1", new One() },
+                { "2", new Second() },
+                { "3", new Three() },
+                { "4", new Four() },
+                { "5", new Five() },
+                { "6", new Six() },
+                { "7", new Seven() },
+                { "8", new Eight() },
+                { "9", new Nine() },
             };
 
-            // 依賴助入服務
-            _all =  d[calButton];
+            // 依賴注入服務
+            _all = d[calButton];
             var result = _all.PostAll(calButton);
             
             return result;
         }
-    };
+    }
 }

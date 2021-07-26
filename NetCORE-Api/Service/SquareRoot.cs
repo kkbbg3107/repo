@@ -9,6 +9,11 @@ namespace NetCORE_Api.Service
 {
     public class SquareRoot : IFactory
     {
+        /// <summary>
+        /// 實作開根號
+        /// </summary>
+        /// <param name="cal">按鈕text = "√"</param>
+        /// <returns>控制項成員</returns>
         public Calculate PostAll(string cal)
         {
             Record.Btn = cal;

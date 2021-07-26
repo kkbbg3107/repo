@@ -36,7 +36,7 @@ namespace WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
 
-            //services.AddScoped<IFactory, Api>();   
+            services.AddScoped<IFactory, Api>();
             services.AddScoped<IFactory, Back>();
             services.AddScoped<IFactory, Clear>();
             services.AddScoped<IFactory, Dot>();
@@ -48,7 +48,7 @@ namespace WebApi
             services.AddScoped<IFactory, SquareRoot>();
             services.AddScoped<IFactory, LeftMark>();
             services.AddScoped<IFactory, RightMark>();
-            //services.AddScoped<IFactory, Equal>();   
+            services.AddScoped<IFactory, Equal>();
             services.AddScoped<IFactory, Zero>();
             services.AddScoped<IFactory, One>();
             services.AddScoped<IFactory, Second>();

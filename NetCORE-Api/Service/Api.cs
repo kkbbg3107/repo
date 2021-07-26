@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class Api 
+    public class Api : IFactory
     {
-
         /// <summary>
         /// 優先權判定
         /// </summary>
@@ -426,10 +425,18 @@ namespace NetCORE_Api.Service
             return postList;
         }
 
-        public Calculate PostAll(Calculate cal)
+        /// <summary>
+        /// 實作api按鈕
+        /// </summary>
+        /// <param name="cal">按鈕text = api</param>
+        /// <returns>控制項結果</returns>
+        public Calculate PostAll(string cal)
         {
-    
-            var p = ToListService(cal.Label);
+            Record.Btn = cal;
+            Calculate c = new Calculate();
+            c.Label = Record.Lbl;
+
+            var p = ToListService(c.Label);
             var postList = ToPostfix(p); // 後序表達式
             var result = PostfixToNum(postList); // 運算結果
             Response data = new Response();
@@ -437,12 +444,13 @@ namespace NetCORE_Api.Service
             var prefix = PostfixToPrefix(postList);
 
             data.Prefix = prefix;
-            data.Formula = cal.Label;
+            data.Formula = c.Label;
             data.Postfix = postfix;
             data.Result = result;
 
-            cal.TextboxResult = $"PostFix : {data.Postfix}, Formula : {data.Formula}, Prefix : {data.Prefix}, Result : {data.Result}";
-            return cal;
+            c.Button = Record.Btn;
+            c.TextboxResult = $"PostFix : {data.Postfix}, Formula : {data.Formula}, Prefix : {data.Prefix}, Result : {data.Result}";
+            return c;
         }
     }
 }

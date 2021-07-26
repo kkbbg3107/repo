@@ -9,7 +9,11 @@ namespace NetCORE_Api.Service
 {
     public class Negative : IFactory
     {
-
+        /// <summary>
+        /// 實作負號
+        /// </summary>
+        /// <param name="cal">按鈕 "+/-"</param>
+        /// <returns>控制項成員</returns>
         public Calculate PostAll(string cal)
         {
             Record.Btn = cal;

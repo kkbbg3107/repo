@@ -8,13 +8,20 @@ namespace NetCORE_Api.Service.Nums
 {
     public class Zero : IFactory
     {
+        /// <summary>
+        /// 點擊到該按鈕的實作
+        /// </summary>
+        /// <param name="cal">按鈕text = 8</param>
+        /// <returns>控制項成員</returns>
         public Calculate PostAll(string cal)
         {
             Record.Btn = cal;
-            Record.TextBoxFirst = cal;
+
             Calculate c = new Calculate();
             c.Button = Record.Btn;
-            c.TextboxFirst += Record.Btn;
+            Record.TextBoxFirst += Record.Btn;
+            c.TextboxFirst = Record.TextBoxFirst;
+            c.Label = Record.Lbl;
             return c;
         }
     }
