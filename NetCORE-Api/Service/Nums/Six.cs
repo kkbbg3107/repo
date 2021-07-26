@@ -6,16 +6,16 @@ using ClassLibrary1.Model;
 
 namespace NetCORE_Api.Service.Nums
 {
-    public class Six:IFactory
+    public class Six :IFactory
     {
         public Calculate PostAll(string cal)
         {
-
-            Record r = new Record();
-            Calculate c = new Calculate(new Record());
-
-            r.Btn += cal;
-            return c; ;
+            Record.Btn = cal;
+            Record.TextBoxFirst = cal;
+            Calculate c = new Calculate();
+            c.Button = Record.Btn;
+            c.TextboxFirst += Record.Btn;
+            return c;
         }
     }
 }

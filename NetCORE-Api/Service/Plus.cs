@@ -6,14 +6,17 @@ using ClassLibrary1.Model;
 
 namespace NetCORE_Api.Service
 {
-    public class Plus
+    public class Plus : IFactory
     {
-        public Calculate PostAll(Calculate cal)
+        public Calculate PostAll(string c)
         {
-            
+            Calculate cal = new Calculate();
             try
             {
-                cal.Label += cal.TextboxFirst;
+                Record.Btn = c;
+                cal.Button = Record.Btn;
+
+                cal.Label += Record.TextBoxFirst;
                 
                 if (IsFirstMark(cal))
                 {
@@ -25,6 +28,8 @@ namespace NetCORE_Api.Service
                     cal.Label += cal.Button;
                     cal.TextboxFirst = string.Empty;
                 }
+                Record.Lbl = cal.Label;
+                Record.TextBoxFirst = string.Empty;
             }
             catch (Exception ex)
             {

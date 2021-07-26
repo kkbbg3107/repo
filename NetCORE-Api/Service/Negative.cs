@@ -7,14 +7,23 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class Negative
+    public class Negative : IFactory
     {
 
-        public Calculate PostAll(Calculate cal)
+        public Calculate PostAll(string cal)
         {
-            cal.TextboxFirst = "(" + cal.TextboxFirst.Insert(0, "-") + ")";
+            Record.Btn = cal;
+            Calculate c = new Calculate();
 
-            return cal;
+            c.TextboxFirst = Record.TextBoxFirst;
+
+            c.TextboxFirst = "(" + c.TextboxFirst.Insert(0, "-") + ")";
+
+            Record.TextBoxFirst = c.TextboxFirst;
+            c.Button = Record.Btn;
+            c.Label = Record.Lbl;
+
+            return c;
         }
     }
 }

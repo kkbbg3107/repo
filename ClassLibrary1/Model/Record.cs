@@ -4,11 +4,11 @@ using System.Text;
 
 namespace ClassLibrary1.Model
 {
-    public class Record
+    public static class Record
     {
-        public string Btn { get; set; }
-        public string Lbl { get; set; }
-        public string Tbxt1 { get; set; }
-        public string Tbxt2 { get; set; }
+        public static string Btn { get; set; }
+        public static string Lbl { get; set; }
+        public static string TextBoxFirst { get; set; }
+        public static string TextBoxResult { get; set; }
     }
 }

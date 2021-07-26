@@ -6,13 +6,20 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class LeftMark
+    public class LeftMark : IFactory
     {
-        public Calculate PostAll(Calculate cal)
+        public Calculate PostAll(string cal)
         {
-            cal.Label += cal.Button;
+            Record.Btn = cal;
+            Calculate c = new Calculate();
 
-            return cal;
+            c.Label = Record.Lbl;
+
+            c.Label += c.Button;
+
+            c.Label = Record.Lbl;
+            c.Button = Record.Btn;
+            return c;
         }
     }
 }

@@ -6,16 +6,24 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class Back 
+    public class Back : IFactory
     {
-        public Calculate PostAll(Calculate cal)
+        public Calculate PostAll(string cal)
         {
-            if (cal.TextboxFirst != string.Empty)
+            Calculate c = new Calculate();
+            c.TextboxFirst = Record.TextBoxFirst;
+
+            if (c.TextboxFirst != string.Empty)
             {
-                cal.TextboxFirst = cal.TextboxFirst.Substring(0, cal.TextboxFirst.Length - 1);
+                c.TextboxFirst = c.TextboxFirst.Substring(0, c.TextboxFirst.Length - 1);
+                Record.TextBoxFirst = c.TextboxFirst;
             }
 
-            return cal;
+            Record.Btn = cal;
+            c.Button = Record.Btn;
+            c.Label = Record.Lbl;
+
+            return c;
         }
     }
 }

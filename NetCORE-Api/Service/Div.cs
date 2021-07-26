@@ -6,14 +6,18 @@ using ClassLibrary1.Model;
 
 namespace NetCORE_Api.Service
 {
-    public class Div 
+    public class Div :IFactory
     {
-        public Calculate PostAll(Calculate cal)
+        public Calculate PostAll(string c)
         {
 
+            Calculate cal = new Calculate();
             try
             {
-                cal.Label += cal.TextboxFirst;
+                Record.Btn = c;
+                cal.Button = Record.Btn;
+
+                cal.Label += Record.TextBoxFirst;
 
                 if (IsFirstMark(cal))
                 {
@@ -33,7 +37,6 @@ namespace NetCORE_Api.Service
 
             return cal;
         }
-
         public bool IsFirstMark(Calculate cal)
         {
             var first = cal.Label.Substring(cal.Label.Length - 1);

@@ -52,18 +52,18 @@ namespace NetCORE_Api.ApiController
             Dictionary<string, IFactory> d = new Dictionary<string, IFactory>()
             {
                 //{"api", new Api()},
-                //{"Back", new Back()},
-                //{"C", new Clear()},
-                //{".", new Dot()},
-                //{"+", new Plus()},
-                //{"-", new Sub()},
-                //{"*", new Multi()},
-                //{"/", new Div()},
+                {"Back", new Back()},
+                {"C", new Clear()},
+                {".", new Dot()},
+                {"+", new Plus()},
+                {"-", new Sub()},
+                {"*", new Multi()},
+                {"/", new Div()},
                 //{"=", new Equal()},
-                //{"+/-", new Negative()},
-                //{"(", new LeftMark()},
-                //{")", new RightMark()},
-                //{"√", new SquareRoot()},
+                {"+/-", new Negative()},
+                {"(", new LeftMark()},
+                {")", new RightMark()},
+                {"√", new SquareRoot()},
                 {"0", new Zero()},
                 {"1", new One()},
                 {"2", new Second()},
@@ -79,7 +79,7 @@ namespace NetCORE_Api.ApiController
             // 依賴助入服務
             _all =  d[calButton];
             var result = _all.PostAll(calButton);
-
+            
             return result;
         }
     };

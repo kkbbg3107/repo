@@ -6,14 +6,23 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class RightMark
+    public class RightMark : IFactory
     {
-        public Calculate PostAll(Calculate cal)
+        public Calculate PostAll(string cal)
         {
-            cal.Label += cal.TextboxFirst + cal.Button;
-            cal.TextboxFirst = string.Empty;
+            Record.Btn = cal;
+            Calculate c = new Calculate();
 
-            return cal;
+            c.Button = Record.Btn;
+            c.TextboxFirst = Record.TextBoxFirst;
+            c.Label = Record.Lbl;
+
+            c.Label += c.TextboxFirst + c.Button;
+            c.TextboxFirst = string.Empty;
+
+            Record.TextBoxFirst = c.TextboxFirst;
+            c.Label = Record.Lbl;
+            return c;
         }
     }
 }
