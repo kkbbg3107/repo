@@ -49,7 +49,7 @@ namespace postfixCal
             };
 
 
-            string json = JsonConvert.SerializeObject(cal.Button);
+            string json = JsonConvert.SerializeObject(cal);
 
             HttpContent contentPost = new StringContent(json, Encoding.UTF8, "application/json"); // 定義json內容
 
