@@ -7,42 +7,63 @@ using System.Linq;
 using System.Threading.Tasks;
 using NetCORE_Api.InterFace;
 using NetCORE_Api.Operator;
+using NetCORE_Api.Priority;
 
 namespace NetCORE_Api.Service
 {
     public class Api : IFactory
     {
-
+        //private IPriority _prior;
         /// <summary>
         /// 優先權判定
         /// </summary>
         /// <param name="priority">優先權大小</param>
         /// <param name="c">待分析的數字</param>
         /// <returns>infix字串</returns>
-        private static int Priority(int priority, string c)
+        private static int Priority(string c)
         {
             // 定義每個運算子的權重
+            //IPriority RightMark = new RightMarkPriority();
+            //IPriority AddSubMark = new AddSubPriority();
+            //IPriority MulDivMark = new MulDivPriority();
+            //IPriority LeftMark = new LeftPriority();
+            //PriorityService priorRight = new PriorityService(RightMark);
+            //PriorityService priorAddSub = new PriorityService(AddSubMark);
+            //PriorityService priorMulDiv = new PriorityService(MulDivMark);
+            //PriorityService priorLeft = new PriorityService(LeftMark);
 
-            switch (c)
+            Dictionary<string, IPriority> dictPriority = new Dictionary<string, IPriority>()
             {
-                case "(":
+                { ")", new RightMarkPriority()},
+                { "+", new AddSubPriority()},
+                { "-", new AddSubPriority()},
+                { "*", new MulDivPriority()},
+                {"/", new MulDivPriority()},
+                {"(", new LeftPriority()}
+            };
 
-                    return priority = -1;
-                case "+":
-                case "-":
+            IPriority _prior = dictPriority[c];
+            var result = _prior.GetPriority(c);
 
-                    return priority = 5;
-                case "*":
-                case "/":
+            return result;
 
-                    return priority = 9;
-                case ")":
+            //switch (c)
+            //{
+            //    case "(":
 
-                    return priority = -100;
-                default:
+            //        return priorRight.PriorityLevel(c);
+            //    case "+":
+            //    case "-":
 
-                    return 0;
-            }
+            //        return priorAddSub.PriorityLevel(c);
+            //    case "*":
+            //    case "/":
+
+            //        return priorMulDiv.PriorityLevel(c);
+            //    case ")":
+
+            //        return priorLeft.PriorityLevel(c);
+            //}
         }
 
         /// <summary>
@@ -301,7 +322,7 @@ namespace NetCORE_Api.Service
                     var c = infix[i];
                     if (c == "+" || c == "-" || c == "*" || c == "/" || c == "(" || c == ")")
                     {
-                        int prior = Priority(priority, c); // 賦予優先權
+                        int prior = Priority(c); // 賦予優先權
 
                         if (prior == -1)
                         {
