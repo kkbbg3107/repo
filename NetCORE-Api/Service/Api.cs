@@ -5,11 +5,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NetCORE_Api.InterFace;
+using NetCORE_Api.Operator;
 
 namespace NetCORE_Api.Service
 {
     public class Api : IFactory
     {
+
         /// <summary>
         /// 優先權判定
         /// </summary>
@@ -19,24 +22,27 @@ namespace NetCORE_Api.Service
         private static int Priority(int priority, string c)
         {
             // 定義每個運算子的權重
-            if (c == "(")
-            {
-                return priority = -1;
-            }
-            else if (c == "+" || c == "-")
-            {
-                return priority = 5;
-            }
-            else if (c == "*" || c == "/")
-            {
-                return priority = 9;
-            }
-            else if (c == ")")
-            {
-                return priority = -100;
-            }
 
-            return 0;
+            switch (c)
+            {
+                case "(":
+
+                    return priority = -1;
+                case "+":
+                case "-":
+
+                    return priority = 5;
+                case "*":
+                case "/":
+
+                    return priority = 9;
+                case ")":
+
+                    return priority = -100;
+                default:
+
+                    return 0;
+            }
         }
 
         /// <summary>
@@ -59,15 +65,13 @@ namespace NetCORE_Api.Service
                         string op2 = (string)s.Peek();
                         s.Pop();
 
-                        // concat the operands and operator
                         string temp = postfix[i] + op2 + op1;
 
-                        // Push String temp back to stack
                         s.Push(temp);
                     }
                     else
                     {
-                        // Push the operand to the stack
+                        
                         s.Push(postfix[i] + string.Empty);
                     }
                 }
@@ -124,39 +128,36 @@ namespace NetCORE_Api.Service
                 for (int j = 0; j < postfix.Count; j++)
                 {
                     string c = postfix[j]; // 可支援轉型
+
                     if (c.Equals("*"))
                     {
-                        string n1 = (string)stack.Pop();
-                        string n2 = (string)stack.Pop();
-                        num2 = Convert.ToDouble(n2);
-                        num1 = Convert.ToDouble(n1);
+                        num1 = Convert.ToDouble(stack.Pop());
+                        num2 = Convert.ToDouble(stack.Pop());
+                 
                         ans = num2 * num1;
                         stack.Push(ans.ToString());
                     }
                     else if (c.Equals("/"))
                     {
-                        string n1 = (string)stack.Pop();
-                        string n2 = (string)stack.Pop();
-                        num2 = Convert.ToDouble(n2);
-                        num1 = Convert.ToDouble(n1);
+                        num1 = Convert.ToDouble(stack.Pop());
+                        num2 = Convert.ToDouble(stack.Pop());
+             
                         ans = num2 / num1;
                         stack.Push(ans.ToString());
                     }
                     else if (c.Equals("+"))
                     {
-                        string n1 = (string)stack.Pop();
-                        string n2 = (string)stack.Pop();
-                        num2 = Convert.ToDouble(n2);
-                        num1 = Convert.ToDouble(n1);
+                        num1 = Convert.ToDouble(stack.Pop());
+                        num2 = Convert.ToDouble(stack.Pop());
+
                         ans = num2 + num1;
                         stack.Push(ans.ToString());
                     }
                     else if (c.Equals("-"))
                     {
-                        string n1 = (string)stack.Pop();
-                        string n2 = (string)stack.Pop();
-                        num2 = Convert.ToDouble(n2);
-                        num1 = Convert.ToDouble(n1);
+                        num1 = Convert.ToDouble(stack.Pop());
+                        num2 = Convert.ToDouble(stack.Pop());
+                 
                         ans = num2 - num1;
                         stack.Push(ans.ToString());
                     }

@@ -23,17 +23,8 @@ namespace NetCORE_Api.Service
                 cal.Label = Record.Lbl;
 
                 cal.Label += Record.TextBoxFirst;
-
-                if (IsLastMark(cal))
-                {
-                    cal.Label = cal.Label.Substring(0, cal.Label.Length - 1);
-                    cal.Label += cal.Button;
-                }
-                else
-                {
-                    cal.Label += cal.Button;
-                    cal.TextboxFirst = string.Empty;
-                }
+                cal = (IsLastMark(cal)) ? Repeat(cal) : FirstMark(cal);
+                
                 Record.Lbl = cal.Label;
                 Record.TextBoxFirst = string.Empty;
             }
@@ -54,6 +45,32 @@ namespace NetCORE_Api.Service
         {
             var first = cal.Label.Substring(cal.Label.Length - 1);
             return first == "+" || first == "-" || first == "*" || first == "/";
+        }
+
+        /// <summary>
+        /// 如果TEXTBOX算式前一個符號為運算子 不能累加 並且改為新選擇的運算子
+        /// </summary>
+        /// <param name="cal">控制項物件</param>
+        /// <returns>控制項物件</returns>
+        public Calculate Repeat(Calculate cal)
+        {
+            cal.Label = cal.Label.Substring(0, cal.Label.Length - 1);
+            cal.Label += cal.Button;
+
+            return cal;
+        }
+
+        /// <summary>
+        /// 如果TEXTBOX前一個符號不為運算子 加上該運算子
+        /// </summary>
+        /// <param name="cal">控制項物件</param>
+        /// <returns>控制項物件</returns>
+        public Calculate FirstMark(Calculate cal)
+        {
+            cal.Label += cal.Button;
+            cal.TextboxFirst = string.Empty;
+
+            return cal;
         }
     }
 }

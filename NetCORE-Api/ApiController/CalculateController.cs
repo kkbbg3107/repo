@@ -50,7 +50,7 @@ namespace NetCORE_Api.ApiController
             _logger.LogWarning(2001, inform.ToString());
 
             // 建立字典讀取指定按紐實作
-            IReadOnlyDictionary<string, IFactory> d = new Dictionary<string, IFactory>()
+            _dictionary = new Dictionary<string, IFactory>()
             {
                 { "api", new Api() },
                 { "Back", new Back() },
@@ -78,7 +78,6 @@ namespace NetCORE_Api.ApiController
             };
 
             // 依賴注入服務
-            _dictionary = d;
             _all = _dictionary[calButton];
             var result = _all.PostAll(calButton);
             
