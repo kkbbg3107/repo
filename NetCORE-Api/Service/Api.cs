@@ -119,6 +119,7 @@ namespace NetCORE_Api.Service
             return x == "+" || x == "-" || x == "/" || x == "*";
         }
 
+        //private static Dictionary<string, IObject> dictionary;
 
         /// <summary>
         /// 後序轉運算結果
@@ -127,18 +128,7 @@ namespace NetCORE_Api.Service
         /// <returns>結果數值</returns>
         private static string PostfixToNum(List<string> postfix)
         {
-            string answer = string.Empty;
-            Stack<string> stack1 = new Stack<string>();
-            double num2 = 0;
-            double num1 = 0;
-            double ans = 0;
-
-            //StaticMember.answer = answer;
-            //StaticMember.ans = ans;
-            //StaticMember.num1 = num1;
-            //StaticMember.num2 = num2;
-            //StaticMember.stack = stack1;
-
+            var variable_postfix = new PostfixToNumObj();
 
             try
             {
@@ -146,75 +136,95 @@ namespace NetCORE_Api.Service
                 {
                     string c = postfix[j]; // 可支援轉型
 
-                    //var dictPostfix = new Dictionary<string, IObject>()
-                    //{
-                    //    {"*", new MulString()},
-                    //    {"/", new DivString()},
-                    //    {"+", new PlusString()},
-                    //    {"-", new SubString()},
-                    //};
-
-                    //if (IsBoolOperatorTrue(c))
-                    //{
-                    //    IObject obj = dictPostfix[c];
-                    //    obj.GetNum(c);
-                    //}
-                    //else
-                    //{
-                    //    stack.Push(postfix[j]);
-                    //}
-
-
-                    if (c.Equals("*"))
+                    var dictionary = new Dictionary<string, IObject>()
                     {
+                        {"*", new MulString(variable_postfix)},
+                        {"/", new DivString(variable_postfix)},
+                        {"+", new PlusString(variable_postfix)},
+                        {"-", new SubString(variable_postfix)},
+                    };
 
-                        //IObject obj = new MulString();
-                        //obj.GetNum(c);
-                        num1 = Convert.ToDouble(stack1.Pop());
-                        num2 = Convert.ToDouble(stack1.Pop());
-
-                        ans = num2 * num1;
-                        stack1.Push(ans.ToString());
-                    }
-                    else if (c.Equals("/"))
+                    if (IsBoolOperatorTrue(c))
                     {
-                        num1 = Convert.ToDouble(stack1.Pop());
-                        num2 = Convert.ToDouble(stack1.Pop());
-
-                        ans = num2 / num1;
-                        stack1.Push(ans.ToString());
-                    }
-                    else if (c.Equals("+"))
-                    {
-                        num1 = Convert.ToDouble(stack1.Pop());
-                        num2 = Convert.ToDouble(stack1.Pop());
-
-                        ans = num2 + num1;
-                        stack1.Push(ans.ToString());
-                    }
-                    else if (c.Equals("-"))
-                    {
-                        num1 = Convert.ToDouble(stack1.Pop());
-                        num2 = Convert.ToDouble(stack1.Pop());
-
-                        ans = num2 - num1;
-                        stack1.Push(ans.ToString());
+                        IObject obj = dictionary[c];
+                        obj.GetNum(c);
                     }
                     else
                     {
-                        stack1.Push(postfix[j]);
+                        variable_postfix.stack.Push(postfix[j]);
                     }
+
+                    //if (c.Equals("*"))
+                    //{
+                    //    GetNumMul();
+                    //}
+                    //else if (c.Equals("/"))
+                    //{
+                    //    GetNumDiv();
+                    //}
+                    //else if (c.Equals("+"))
+                    //{
+                    //    GetNumPlus();
+                    //}
+                    //else if (c.Equals("-"))
+                    //{
+                    //    GetNumSub();
+                    //}
+                    //else
+                    //{
+                    //    StaticMember.stack.Push(postfix[j]);
+                    //}
                 }
 
-                answer = (string)stack1.Pop();
+                variable_postfix.answer = (string)variable_postfix.stack.Pop();
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
 
-            return answer;
+            return variable_postfix.answer;
         }
+
+
+
+        //public static void GetNumMul()
+        //{
+        //    StaticMember.num1 = Convert.ToDouble(StaticMember.stack.Pop());
+        //    StaticMember.num2 = Convert.ToDouble(StaticMember.stack.Pop());
+
+        //    StaticMember.ans = StaticMember.num2 * StaticMember.num1;
+        //    StaticMember.stack.Push(StaticMember.ans.ToString());
+        //}
+
+        //public static void GetNumDiv()
+        //{
+        //    StaticMember.num1 = Convert.ToDouble(StaticMember.stack.Pop());
+        //    StaticMember.num2 = Convert.ToDouble(StaticMember.stack.Pop());
+
+        //    StaticMember.ans = StaticMember.num2 / StaticMember.num1;
+        //    StaticMember.stack.Push(StaticMember.ans.ToString());
+        //}
+
+        //public static void GetNumPlus()
+        //{
+        //    StaticMember.num1 = Convert.ToDouble(StaticMember.stack.Pop());
+        //    StaticMember.num2 = Convert.ToDouble(StaticMember.stack.Pop());
+
+        //    StaticMember.ans = StaticMember.num2 + StaticMember.num1;
+        //    StaticMember.stack.Push(StaticMember.ans.ToString());
+        //}
+
+
+        //public static void GetNumSub()
+        //{
+        //    StaticMember.num1 = Convert.ToDouble(StaticMember.stack.Pop());
+        //    StaticMember.num2 = Convert.ToDouble(StaticMember.stack.Pop());
+
+        //    StaticMember.ans = StaticMember.num2 - StaticMember.num1;
+        //    StaticMember.stack.Push(StaticMember.ans.ToString());
+        //}
+
 
         /// <summary>
         /// 理解操作排序前先生成列表
@@ -238,7 +248,7 @@ namespace NetCORE_Api.Service
                     }
                     else if (c == ")")
                     {
-                        if (stack.Count != 0)  // 負號的右括號
+                        if (stack.Count != 0) // 負號的右括號
                         {
                             container += stack.Pop();
                             container += str;
@@ -264,26 +274,14 @@ namespace NetCORE_Api.Service
 
                         list.Add(c);
                     }
-                    else if (c == "-")
+                    else if (c == "-") // "減號"&"負號"的判別
                     {
-                        if (list.Count != 0 && list[list.Count - 1].ToString() == "(" && str != string.Empty) // 把減號加上 前面非負數
-                        {
-                            list.Add(str);
-                            str = string.Empty;
-                            list.Add(c);
-                        }
-                        else if (list.Count != 0 && list[list.Count - 1].ToString() == "(") // 負數
+                        if (IsLeftBracketAndCountNotZero(list) && str == string.Empty) // 負數
                         {
                             stack.Push(c);
                         }
-                        else if (list.Count != 0 && list[list.Count - 1].ToString() == ")") // 減號前面右括號時
+                        else if (IsRightBracketAndCountNotZero(list)) // 減號前面右括號時
                         {
-                            list.Add(c);
-                        }
-                        else if (list.Count == 0)
-                        {
-                            list.Add(str);
-                            str = string.Empty;
                             list.Add(c);
                         }
                         else
@@ -293,7 +291,7 @@ namespace NetCORE_Api.Service
                             list.Add(c);
                         }
                     }
-                    else
+                    else // 數字
                     {
                         str += c;
                     }
@@ -312,6 +310,25 @@ namespace NetCORE_Api.Service
             return list;
         }
 
+        /// <summary>
+        /// 判斷當下是"-"時 集合是否不為零且 集合最後一個元素為左括號
+        /// </summary>
+        /// <param name="list">需要計算的算式</param>
+        /// <returns>是否為符合的算式</returns>
+        public static bool IsLeftBracketAndCountNotZero(List<string> list)
+        {
+            return list.Count != 0 && list[list.Count - 1].ToString() == "(";
+        }
+
+        /// <summary>
+        /// 判斷當下是"-"時 集合是否不為零且 集合最後一個元素為右括號
+        /// </summary>
+        /// <param name="list">需要計算的算式</param>
+        /// <returns>是否為符合的算式</returns>
+        public static bool IsRightBracketAndCountNotZero(List<string> list)
+        {
+            return list.Count != 0 && list[list.Count - 1].ToString() == ")";
+        } 
         /// <summary>
         /// step1 : '(' pusg至stack
         /// step2 : ')':一直pop並將pop出的值放入postfix 直到stack中碰到 '('為止
@@ -340,94 +357,51 @@ namespace NetCORE_Api.Service
                     {
                         int prior = Priority(c); // 賦予優先權
 
+                        if (temp != string.Empty)
+                        {
+                            postList.Add(temp);
+                            temp = string.Empty;
+                        }
+
                         if (prior == -1)
                         {
-                            if (temp != string.Empty)
-                            {
-                                postList.Add(temp);
-                                temp = string.Empty;
-                            }
-
                             stack.Push(c);
                         }
                         else if (prior == 5)
                         {
-                            if (temp != string.Empty)
-                            {
-                                postList.Add(temp);
-                                temp = string.Empty;
-                            }
-
-                            if (stack.Count == 0)
+                            if (stack.Count == 0 || stack.Peek() == "(")
                             {
                                 stack.Push(c);
                             }
-                            else if (stack.Peek() == "(")
-                            {
-                                // '+' '-' 權重> '('
-                                stack.Push(c);
-                            }
-                            else if (stack.Peek() == "*" || stack.Peek() == "/")
+                            else if (stack.Peek() == "*" || stack.Peek() == "/" || stack.Peek() == "+" || stack.Peek() == "-")
                             {
                                 postList.Add(stack.Pop().ToString());
                                 i--; // 重新回到這個運算子在run一次
                                 recordLen++; // 記數也要加回去
                             }
-                            else if (stack.Peek() == "+" || stack.Peek() == "-")
-                            {
-                                postList.Add(stack.Pop().ToString());
-                                i--;
-                                recordLen++;
-                            }
                         }
                         else if (prior == -100)
                         {
-                            if (temp != string.Empty)
-                            {
-                                postList.Add(temp);
-                                temp = string.Empty;
-                            }
-
                             while (stack.Peek() != "(")
                             {
-                                // 直到stack裡遇到'('把上面的運算子都pop出來
-                                postList.Add(stack.Pop().ToString());
+                                postList.Add(stack.Pop().ToString()); // 直到stack裡遇到'('把上面的運算子都pop出來
                             }
 
                             stack.Pop(); // 遇到的'('也要移掉
                         }
                         else if (prior == 9)
                         {
-                            // 遇到'*' '/'運算子
-                            if (stack.Count == 0)
+                            if (stack.Count == 0) // 遇到'*' '/'運算子
                             {
-                                if (temp != string.Empty)
-                                {
-                                    postList.Add(temp);
-                                    temp = string.Empty;
-                                }
-
                                 stack.Push(c);
                             }
                             else if (stack.Peek().ToString() == "*" || stack.Peek().ToString() == "/")
                             {
-                                if (temp != string.Empty)
-                                {
-                                    postList.Add(temp);
-                                    temp = string.Empty;
-                                }
-
                                 postList.Add(stack.Pop().ToString());
                                 stack.Push(c);
                             }
                             else
                             {
-                                if (temp != string.Empty)
-                                {
-                                    postList.Add(temp);
-                                    temp = string.Empty;
-                                }
-
                                 stack.Push(c);
                             }
                         }

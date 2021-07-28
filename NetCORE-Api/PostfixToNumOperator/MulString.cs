@@ -9,13 +9,22 @@ namespace NetCORE_Api.PostfixToNumOperator
 {
     public class MulString : IObject
     {
+        private PostfixToNumObj _obj;
+
+        public MulString(PostfixToNumObj obj)
+        {
+            _obj = obj;
+        }
+        
+        
         public void GetNum(string c)
         {
-            StaticMember.num1 = Convert.ToDouble(StaticMember.stack.Pop());
-            StaticMember.num2 = Convert.ToDouble(StaticMember.stack.Pop());
+            
+            _obj.num1 = Convert.ToDouble(_obj.stack.Pop()); 
+            _obj.num2 = Convert.ToDouble(_obj.stack.Pop());
 
-            StaticMember.ans = StaticMember.num2 * StaticMember.num1;
-            StaticMember.stack.Push(StaticMember.ans.ToString());
+            _obj.ans = _obj.num2 * _obj.num1;
+            _obj.stack.Push(_obj.ans.ToString());
         }
     }
 }
