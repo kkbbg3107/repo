@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCORE_Api.InterFace
+namespace NetCORE_Api.PostfixToNumOperator
 {
-    public interface IOperator
+    public interface IObject
     {
-        void WhichOperator(string opt);
+        void GetNum(string c);
     }
 }

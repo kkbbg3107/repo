@@ -7,13 +7,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using NetCORE_Api.InterFace;
 using NetCORE_Api.Operator;
+using NetCORE_Api.PostfixToNumOperator;
 using NetCORE_Api.Priority;
 
 namespace NetCORE_Api.Service
 {
     public class Api : IFactory
     {
-        //private IPriority _prior;
         /// <summary>
         /// 優先權判定
         /// </summary>
@@ -22,48 +22,20 @@ namespace NetCORE_Api.Service
         /// <returns>infix字串</returns>
         private static int Priority(string c)
         {
-            // 定義每個運算子的權重
-            //IPriority RightMark = new RightMarkPriority();
-            //IPriority AddSubMark = new AddSubPriority();
-            //IPriority MulDivMark = new MulDivPriority();
-            //IPriority LeftMark = new LeftPriority();
-            //PriorityService priorRight = new PriorityService(RightMark);
-            //PriorityService priorAddSub = new PriorityService(AddSubMark);
-            //PriorityService priorMulDiv = new PriorityService(MulDivMark);
-            //PriorityService priorLeft = new PriorityService(LeftMark);
-
-            Dictionary<string, IPriority> dictPriority = new Dictionary<string, IPriority>()
+            var dictPriority = new Dictionary<string, IPriority>()
             {
                 { ")", new RightMarkPriority()},
                 { "+", new AddSubPriority()},
                 { "-", new AddSubPriority()},
                 { "*", new MulDivPriority()},
-                {"/", new MulDivPriority()},
-                {"(", new LeftPriority()}
+                { "/", new MulDivPriority()},
+                { "(", new LeftPriority()}
             };
 
             IPriority _prior = dictPriority[c];
             var result = _prior.GetPriority(c);
 
             return result;
-
-            //switch (c)
-            //{
-            //    case "(":
-
-            //        return priorRight.PriorityLevel(c);
-            //    case "+":
-            //    case "-":
-
-            //        return priorAddSub.PriorityLevel(c);
-            //    case "*":
-            //    case "/":
-
-            //        return priorMulDiv.PriorityLevel(c);
-            //    case ")":
-
-            //        return priorLeft.PriorityLevel(c);
-            //}
         }
 
         /// <summary>
@@ -118,21 +90,35 @@ namespace NetCORE_Api.Service
         /// </summary>
         /// <param name="x">輸入的數</param>
         /// <returns>運算子回傳true</returns>
-        private static Boolean IsOperator(string x)
+        private static bool IsOperator(string x)
         {
-            switch (x)
+            var dictionaryOperator = new Dictionary<string, IBoolenOperator>()
             {
-                case "+":
-                case "-":
-                case "/":
-                case "*":
-                    return true;
-                default:
-                    break;
+                {"+", new IsPlus()},
+                {"-", new IsSub()},
+                {"*", new IsMul()},
+                {"/", new IsDiv()}
+            };
+
+            if (IsBoolOperatorTrue(x))
+            {
+                IBoolenOperator boolOperator = dictionaryOperator[x];
+                boolOperator.IsOperator(x);
             }
 
             return false;
         }
+
+        /// <summary>
+        /// 判斷是否為運算子
+        /// </summary>
+        /// <param name="x">傳入的值</param>
+        /// <returns>為運算子回傳true</returns>
+        public static bool IsBoolOperatorTrue(string x)
+        {
+            return x == "+" || x == "-" || x == "/" || x == "*";
+        }
+
 
         /// <summary>
         /// 後序轉運算結果
@@ -141,54 +127,86 @@ namespace NetCORE_Api.Service
         /// <returns>結果數值</returns>
         private static string PostfixToNum(List<string> postfix)
         {
-            string answer;
-            Stack<string> stack = new Stack<string>();
-            double num2, num1, ans;
+            string answer = string.Empty;
+            Stack<string> stack1 = new Stack<string>();
+            double num2 = 0;
+            double num1 = 0;
+            double ans = 0;
+
+            //StaticMember.answer = answer;
+            //StaticMember.ans = ans;
+            //StaticMember.num1 = num1;
+            //StaticMember.num2 = num2;
+            //StaticMember.stack = stack1;
+
+
             try
             {
                 for (int j = 0; j < postfix.Count; j++)
                 {
                     string c = postfix[j]; // 可支援轉型
 
+                    //var dictPostfix = new Dictionary<string, IObject>()
+                    //{
+                    //    {"*", new MulString()},
+                    //    {"/", new DivString()},
+                    //    {"+", new PlusString()},
+                    //    {"-", new SubString()},
+                    //};
+
+                    //if (IsBoolOperatorTrue(c))
+                    //{
+                    //    IObject obj = dictPostfix[c];
+                    //    obj.GetNum(c);
+                    //}
+                    //else
+                    //{
+                    //    stack.Push(postfix[j]);
+                    //}
+
+
                     if (c.Equals("*"))
                     {
-                        num1 = Convert.ToDouble(stack.Pop());
-                        num2 = Convert.ToDouble(stack.Pop());
-                 
+
+                        //IObject obj = new MulString();
+                        //obj.GetNum(c);
+                        num1 = Convert.ToDouble(stack1.Pop());
+                        num2 = Convert.ToDouble(stack1.Pop());
+
                         ans = num2 * num1;
-                        stack.Push(ans.ToString());
+                        stack1.Push(ans.ToString());
                     }
                     else if (c.Equals("/"))
                     {
-                        num1 = Convert.ToDouble(stack.Pop());
-                        num2 = Convert.ToDouble(stack.Pop());
-             
+                        num1 = Convert.ToDouble(stack1.Pop());
+                        num2 = Convert.ToDouble(stack1.Pop());
+
                         ans = num2 / num1;
-                        stack.Push(ans.ToString());
+                        stack1.Push(ans.ToString());
                     }
                     else if (c.Equals("+"))
                     {
-                        num1 = Convert.ToDouble(stack.Pop());
-                        num2 = Convert.ToDouble(stack.Pop());
+                        num1 = Convert.ToDouble(stack1.Pop());
+                        num2 = Convert.ToDouble(stack1.Pop());
 
                         ans = num2 + num1;
-                        stack.Push(ans.ToString());
+                        stack1.Push(ans.ToString());
                     }
                     else if (c.Equals("-"))
                     {
-                        num1 = Convert.ToDouble(stack.Pop());
-                        num2 = Convert.ToDouble(stack.Pop());
-                 
+                        num1 = Convert.ToDouble(stack1.Pop());
+                        num2 = Convert.ToDouble(stack1.Pop());
+
                         ans = num2 - num1;
-                        stack.Push(ans.ToString());
+                        stack1.Push(ans.ToString());
                     }
                     else
                     {
-                        stack.Push(postfix[j]);
+                        stack1.Push(postfix[j]);
                     }
                 }
 
-                answer = (string)stack.Pop();
+                answer = (string)stack1.Pop();
             }
             catch (Exception ex)
             {
@@ -305,8 +323,6 @@ namespace NetCORE_Api.Service
         /// <returns>後序表達式集合</returns>
         private static List<string> ToPostfix(List<string> infix)
         {
-            int priority = 0; // 權重
-
             List<string> postList = new List<string>(); // 後序表達示
 
             Stack<string> stack = new Stack<string>();
@@ -419,7 +435,6 @@ namespace NetCORE_Api.Service
                     else
                     {
                         temp += c;
-                        // postfix += c; 數值直接帶進postfix
                     }
 
                     recordLen--; // 每循環一次 記數-1 

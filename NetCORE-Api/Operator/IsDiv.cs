@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCORE_Api.Priority
+namespace NetCORE_Api.Operator
 {
     /// <summary>
-    /// 加號優先權
+    /// 判斷是否為除號
     /// </summary>
-    public class AddSubPriority : IPriority
+    public class IsDiv : IBoolenOperator
     {
-        public int GetPriority(string c)
+        public bool IsOperator(string c)
         {
-            return 5;
+            return true;
         }
     }
 }
