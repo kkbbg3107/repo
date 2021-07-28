@@ -8,22 +8,19 @@ namespace NetCORE_Api.PostfixToNumOperator
     public class SubClass : IObject
     {
 
-        private ClassObj _obj;
+        private ClassObj _post;
 
-        public SubClass(ClassObj obj)
+        public SubClass(ClassObj post)
         {
-            _obj = obj;
+            _post = post;
         }
 
-
-        public void GetNum(ClassObj Obj)
+        public void GetNum(ClassObj classObj)
         {
-
-            Obj.num1 = Convert.ToDouble(Obj.stack.Pop());
-            Obj.num2 = Convert.ToDouble(Obj.stack.Pop());
-
-            Obj.ans = Obj.num2 - Obj.num1;
-            Obj.stack.Push(Obj.ans.ToString());
+            classObj.num2 = Convert.ToDouble(classObj.stack.Pop());
+            classObj.num1 = Convert.ToDouble(classObj.stack.Pop());
+            classObj.ans = classObj.num2 - classObj.num1;
+            classObj.stack.Push((classObj.ans.ToString()));
         }
     }
 }
