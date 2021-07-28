@@ -128,7 +128,18 @@ namespace NetCORE_Api.Service
         /// <returns>結果數值</returns>
         private static string PostfixToNum(List<string> postfix)
         {
-            var variable_postfix = new PostfixToNumObj();
+            ClassObj classobj = new ClassObj();
+            string answer = string.Empty;
+            double num1 = 0;
+            double num2 = 0;
+            double ans = 0;
+            Stack<string> stack = new Stack<string>();
+
+            classobj.stack = stack;
+            classobj.ans = ans;
+            classobj.num1 = num1;
+            classobj.num2 = num2;
+            classobj.answer = answer;
 
             try
             {
@@ -136,95 +147,35 @@ namespace NetCORE_Api.Service
                 {
                     string c = postfix[j]; // 可支援轉型
 
-                    var dictionary = new Dictionary<string, IObject>()
+                    var dict = new Dictionary<string, IObject>()
                     {
-                        {"*", new MulString(variable_postfix)},
-                        {"/", new DivString(variable_postfix)},
-                        {"+", new PlusString(variable_postfix)},
-                        {"-", new SubString(variable_postfix)},
+                        {"+", new PlusClass(classobj)},
+                        {"-", new SubClass(classobj)},
+                        {"*", new MulClass(classobj)},
+                        {"/", new DivClass(classobj)},
                     };
 
-                    if (IsBoolOperatorTrue(c))
+                    if (c.Equals("*") || c.Equals("/") || c.Equals("+") || c.Equals("-"))
                     {
-                        IObject obj = dictionary[c];
-                        obj.GetNum(c);
+                        var iobj = dict[c];
+                        iobj.GetNum(classobj);
+                        ;
                     }
                     else
                     {
-                        variable_postfix.stack.Push(postfix[j]);
+                        classobj.stack.Push(c);
                     }
-
-                    //if (c.Equals("*"))
-                    //{
-                    //    GetNumMul();
-                    //}
-                    //else if (c.Equals("/"))
-                    //{
-                    //    GetNumDiv();
-                    //}
-                    //else if (c.Equals("+"))
-                    //{
-                    //    GetNumPlus();
-                    //}
-                    //else if (c.Equals("-"))
-                    //{
-                    //    GetNumSub();
-                    //}
-                    //else
-                    //{
-                    //    StaticMember.stack.Push(postfix[j]);
-                    //}
                 }
 
-                variable_postfix.answer = (string)variable_postfix.stack.Pop();
+                classobj.answer = (string)classobj.stack.Pop();
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
 
-            return variable_postfix.answer;
+            return classobj.answer;
         }
-
-
-
-        //public static void GetNumMul()
-        //{
-        //    StaticMember.num1 = Convert.ToDouble(StaticMember.stack.Pop());
-        //    StaticMember.num2 = Convert.ToDouble(StaticMember.stack.Pop());
-
-        //    StaticMember.ans = StaticMember.num2 * StaticMember.num1;
-        //    StaticMember.stack.Push(StaticMember.ans.ToString());
-        //}
-
-        //public static void GetNumDiv()
-        //{
-        //    StaticMember.num1 = Convert.ToDouble(StaticMember.stack.Pop());
-        //    StaticMember.num2 = Convert.ToDouble(StaticMember.stack.Pop());
-
-        //    StaticMember.ans = StaticMember.num2 / StaticMember.num1;
-        //    StaticMember.stack.Push(StaticMember.ans.ToString());
-        //}
-
-        //public static void GetNumPlus()
-        //{
-        //    StaticMember.num1 = Convert.ToDouble(StaticMember.stack.Pop());
-        //    StaticMember.num2 = Convert.ToDouble(StaticMember.stack.Pop());
-
-        //    StaticMember.ans = StaticMember.num2 + StaticMember.num1;
-        //    StaticMember.stack.Push(StaticMember.ans.ToString());
-        //}
-
-
-        //public static void GetNumSub()
-        //{
-        //    StaticMember.num1 = Convert.ToDouble(StaticMember.stack.Pop());
-        //    StaticMember.num2 = Convert.ToDouble(StaticMember.stack.Pop());
-
-        //    StaticMember.ans = StaticMember.num2 - StaticMember.num1;
-        //    StaticMember.stack.Push(StaticMember.ans.ToString());
-        //}
-
 
         /// <summary>
         /// 理解操作排序前先生成列表

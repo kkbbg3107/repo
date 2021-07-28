@@ -7,6 +7,6 @@ namespace NetCORE_Api.PostfixToNumOperator
 {
     public interface IObject
     {
-        void GetNum(string c);
+        void GetNum(ClassObj classObj);
     }
 }
