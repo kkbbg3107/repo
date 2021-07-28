@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.Service
 {
@@ -117,64 +118,91 @@ namespace NetCORE_Api.Service
         /// <returns>結果數值</returns>
         private static string PostfixToNum(List<string> postfix)
         {
-            string answer;
+            ClassObj classobj = new ClassObj();
+            string answer = string.Empty;
+            double num1 = 0;
+            double num2 = 0;
+            double ans = 0;
             Stack<string> stack = new Stack<string>();
-            double num2, num1, ans;
+
+            classobj.stack = stack;
+            classobj.ans = ans;
+            classobj.num1 = num1;
+            classobj.num2 = num2;
+            classobj.answer = answer;
             try
             {
                 for (int j = 0; j < postfix.Count; j++)
                 {
                     string c = postfix[j]; // 可支援轉型
-                    if (c.Equals("*"))
+
+                    var dict = new Dictionary<string, IObject>()
                     {
-                        string n1 = (string)stack.Pop();
-                        string n2 = (string)stack.Pop();
-                        num2 = Convert.ToDouble(n2);
-                        num1 = Convert.ToDouble(n1);
-                        ans = num2 * num1;
-                        stack.Push(ans.ToString());
-                    }
-                    else if (c.Equals("/"))
+                        {"+", new PlusClass(classobj)},
+                        {"-", new SubClass(classobj)},
+                        {"*", new MulClass(classobj)},
+                        {"/", new DivClass(classobj)},
+                    };
+
+                    if (c.Equals("*") || c.Equals("/") || c.Equals("+") || c.Equals("-"))
                     {
-                        string n1 = (string)stack.Pop();
-                        string n2 = (string)stack.Pop();
-                        num2 = Convert.ToDouble(n2);
-                        num1 = Convert.ToDouble(n1);
-                        ans = num2 / num1;
-                        stack.Push(ans.ToString());
-                    }
-                    else if (c.Equals("+"))
-                    {
-                        string n1 = (string)stack.Pop();
-                        string n2 = (string)stack.Pop();
-                        num2 = Convert.ToDouble(n2);
-                        num1 = Convert.ToDouble(n1);
-                        ans = num2 + num1;
-                        stack.Push(ans.ToString());
-                    }
-                    else if (c.Equals("-"))
-                    {
-                        string n1 = (string)stack.Pop();
-                        string n2 = (string)stack.Pop();
-                        num2 = Convert.ToDouble(n2);
-                        num1 = Convert.ToDouble(n1);
-                        ans = num2 - num1;
-                        stack.Push(ans.ToString());
-                    }
+                        var iobj = dict[c];
+                        iobj.GetNum(classobj);
+;                    }
                     else
                     {
-                        stack.Push(postfix[j]);
+                        classobj.stack.Push(c);
                     }
+                    //if (c.Equals("*"))
+                    //{
+                    //    string n1 = (string)stack.Pop();
+                    //    string n2 = (string)stack.Pop();
+                    //    num2 = Convert.ToDouble(n2);
+                    //    num1 = Convert.ToDouble(n1);
+                    //    ans = num2 * num1;
+                    //    stack.Push(ans.ToString());
+                    //}
+                    //else if (c.Equals("/"))
+                    //{
+                    //    string n1 = (string)stack.Pop();
+                    //    string n2 = (string)stack.Pop();
+                    //    num2 = Convert.ToDouble(n2);
+                    //    num1 = Convert.ToDouble(n1);
+                    //    ans = num2 / num1;
+                    //    stack.Push(ans.ToString());
+                    //}
+                    //else if (c.Equals("+"))
+                    //{
+                    //    string n1 = (string)stack.Pop();
+                    //    string n2 = (string)stack.Pop();
+                    //    num2 = Convert.ToDouble(n2);
+                    //    num1 = Convert.ToDouble(n1);
+                    //    ans = num2 + num1;
+                    //    stack.Push(ans.ToString());
+                    //}
+                    //else if (c.Equals("-"))
+                    //{
+                    //    string n1 = (string)stack.Pop();
+                    //    string n2 = (string)stack.Pop();
+                    //    num2 = Convert.ToDouble(n2);
+                    //    num1 = Convert.ToDouble(n1);
+                    //    ans = num2 - num1;
+                    //    stack.Push(ans.ToString());
+                    //}
+                    //else
+                    //{
+                    //    stack.Push(postfix[j]);
+                    //}
                 }
 
-                answer = (string)stack.Pop();
+                classobj.answer = (string)classobj.stack.Pop();
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
 
-            return answer;
+            return classobj.answer;
         }
 
         /// <summary>
