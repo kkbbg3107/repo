@@ -23,14 +23,14 @@ namespace NetCORE_Api.ApiController
         /// <summary>
         /// 建立私有欄位
         /// </summary>
-        private  IFactory _all;
+        private IFactory _all;
 
-        private Dictionary<string, IFactory> _dictionary;
+        private IReadOnlyDictionary<string, IFactory> _dictionary;
         /// <summary>
         /// 建立相依
         /// </summary>
         /// <param name="logger">檢查api輸入正確性</param>
-        public CalculateController(Dictionary<string, IFactory> dictionary, ILogger<CalculateController> logger)
+        public CalculateController(IReadOnlyDictionary<string, IFactory> dictionary, ILogger<CalculateController> logger)
         {
             this._dictionary = dictionary;
             this._logger = logger;
@@ -42,47 +42,46 @@ namespace NetCORE_Api.ApiController
         /// <param name="cal">控制項物件</param>
         /// <returns>控制項物件</returns>
         [HttpPost("PostAll")]
-        public Calculate PostCal([FromBody] Calculate cal)
+        public Calculate PostCal([FromBody] string calButton)
         {
             StringBuilder inform = new StringBuilder(DateTime.Now.ToString());
-            inform.Append($"CalculateController的PostSquare方法被呼叫,傳入參數為{cal}");
+            inform.Append($"CalculateController的PostSquare方法被呼叫,傳入參數為{calButton}");
 
             _logger.LogWarning(2001, inform.ToString());
 
             // 建立字典讀取指定按紐實作
-            Dictionary<string, IFactory> d = new Dictionary<string, IFactory>()
+            _dictionary = new Dictionary<string, IFactory>()
             {
-                {"api", new Api()},
-                {"Back", new Back()},
-                {"C", new Clear()},
-                {".", new Dot()},
-                {"+", new Plus()},
-                {"-", new Sub()},
-                {"*", new Multi()},
-                {"/", new Div()},
-                {"=", new Equal()},
-                {"+/-", new Negative()},
-                {"(", new LeftMark()},
-                {")", new RightMark()},
-                {"√", new SquareRoot()},
-                {"0", new Zero()},
-                {"1", new One()},
-                {"2", new Second()},
-                {"3", new Three()},
-                {"4", new Four()},
-                {"5", new Five()},
-                {"6", new Six()},
-                {"7", new Seven()},
-                {"8", new Eight()},
-                {"9", new Nine()},
+                { "api", new Api() },
+                { "Back", new Back() },
+                { "C", new Clear() },
+                { ".", new Dot() },
+                { "+", new Plus() },
+                { "-", new Sub() },
+                { "*", new Multi() },
+                { "/", new Div() },
+                { "=", new Equal() },
+                { "+/-", new Negative() },
+                { "(", new LeftMark() },
+                { ")", new RightMark() },
+                { "√", new SquareRoot() },
+                { "0", new Zero() },
+                { "1", new One() },
+                { "2", new Second() },
+                { "3", new Three() },
+                { "4", new Four() },
+                { "5", new Five() },
+                { "6", new Six() },
+                { "7", new Seven() },
+                { "8", new Eight() },
+                { "9", new Nine() },
             };
 
-            // 依賴助入服務
-            _dictionary = d;
-            _all = _dictionary[cal.Button];
-            var result = _all.PostAll(Record.Btn);
+            // 依賴注入服務
+            _all = _dictionary[calButton];
+            var result = _all.PostAll(calButton);
 
             return result;
         }
-    };
+    }
 }

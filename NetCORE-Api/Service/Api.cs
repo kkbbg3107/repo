@@ -416,7 +416,25 @@ namespace NetCORE_Api.Service
         //}
         public Calculate PostAll(string cal)
         {
-            throw new NotImplementedException();
+            Record.Btn = cal;
+            Calculate c = new Calculate();
+            c.Label = Record.Lbl;
+
+            var p = ToListService(c.Label);
+            var postList = ToPostfix(p); // 後序表達式
+            var result = PostfixToNum(postList); // 運算結果
+            Response data = new Response();
+            var postfix = string.Join(",", postList.ToArray());
+            var prefix = PostfixToPrefix(postList);
+
+            data.Prefix = prefix;
+            data.Formula = c.Label;
+            data.Postfix = postfix;
+            data.Result = result;
+
+            c.Button = Record.Btn;
+            c.TextboxResult = $"PostFix : {data.Postfix}, Formula : {data.Formula}, Prefix : {data.Prefix}, Result : {data.Result}";
+            return c;
         }
     }
 }
