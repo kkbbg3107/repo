@@ -19,8 +19,8 @@ namespace NetCORE_Api.ToPostfix
                 return 2;
             }
 
-            if (postfixData.Prior == 5 && postfixData.Stack.Peek() == "*" || postfixData.Stack.Peek() == "/" ||
-                postfixData.Stack.Peek() == "+" || postfixData.Stack.Peek() == "-")
+            if (postfixData.Stack.Peek() == "*" || postfixData.Stack.Peek() == "/" ||
+                postfixData.Stack.Peek() == "+" || postfixData.Stack.Peek() == "-" && postfixData.Prior == 5)
             {
                 return 3;
             }
