@@ -9,7 +9,7 @@ namespace NetCORE_Api
     //做按鈕的判斷
     public interface IFactory
     {        
-        Calculate PostAll(Calculate cal);
+        Calculate PostAll(string cal);
     }
 }
  

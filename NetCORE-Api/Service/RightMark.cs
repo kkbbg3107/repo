@@ -8,12 +8,26 @@ namespace NetCORE_Api.Service
 {
     public class RightMark : IFactory
     {
-        public Calculate PostAll(Calculate cal)
+        /// <summary>
+        /// 實作右括號
+        /// </summary>
+        /// <param name="cal">按鈕 text = ")"</param>
+        /// <returns>控制項成員</returns>
+        public Calculate PostAll(string cal)
         {
-            cal.Label += cal.TextboxFirst + cal.Button;
-            cal.TextboxFirst = string.Empty;
+            Record.Btn = cal;
+            Calculate c = new Calculate();
 
-            return cal;
+            c.Button = Record.Btn;
+            c.TextboxFirst = Record.TextBoxFirst;
+            c.Label = Record.Lbl;
+
+            c.Label += c.TextboxFirst + c.Button;
+            c.TextboxFirst = string.Empty;
+
+            Record.TextBoxFirst = c.TextboxFirst;
+            Record.Lbl = c.Label;
+            return c;
         }
     }
 }

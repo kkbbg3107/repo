@@ -396,23 +396,27 @@ namespace NetCORE_Api.Service
             return postList;
         }
 
-        public Calculate PostAll(Calculate cal)
+        //public Calculate PostAll(string cal)
+        //{
+
+        //    var p = ToListService(Record.Lbl);
+        //    var postList = ToPostfix(p); // 後序表達式
+        //    var result = PostfixToNum(postList); // 運算結果
+        //    Response data = new Response();
+        //    var postfix = string.Join(",", postList.ToArray());
+        //    var prefix = PostfixToPrefix(postList);
+
+        //    data.Prefix = prefix;
+        //    data.Formula = Record.Lbl;
+        //    data.Postfix = postfix;
+        //    data.Result = result;
+
+        //    Record.TextBoxResult = $"PostFix : {data.Postfix}, Formula : {data.Formula}, Prefix : {data.Prefix}, Result : {data.Result}";
+        //    return Record;
+        //}
+        public Calculate PostAll(string cal)
         {
-
-            var p = ToListService(cal.Label);
-            var postList = ToPostfix(p); // 後序表達式
-            var result = PostfixToNum(postList); // 運算結果
-            Response data = new Response();
-            var postfix = string.Join(",", postList.ToArray());
-            var prefix = PostfixToPrefix(postList);
-
-            data.Prefix = prefix;
-            data.Formula = cal.Label;
-            data.Postfix = postfix;
-            data.Result = result;
-
-            cal.TextboxResult = $"PostFix : {data.Postfix}, Formula : {data.Formula}, Prefix : {data.Prefix}, Result : {data.Result}";
-            return cal;
+            throw new NotImplementedException();
         }
     }
 }

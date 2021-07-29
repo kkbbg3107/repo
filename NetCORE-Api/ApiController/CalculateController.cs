@@ -80,7 +80,7 @@ namespace NetCORE_Api.ApiController
             // 依賴助入服務
             _dictionary = d;
             _all = _dictionary[cal.Button];
-            var result = _all.PostAll(cal);
+            var result = _all.PostAll(Record.Btn);
 
             return result;
         }

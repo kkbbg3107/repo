@@ -7,16 +7,29 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.Service
 {
-    public class SquareRoot :IFactory
+    public class SquareRoot : IFactory
     {
-        public Calculate PostAll(Calculate cal)
+        /// <summary>
+        /// 實作開根號
+        /// </summary>
+        /// <param name="cal">按鈕text = "√"</param>
+        /// <returns>控制項成員</returns>
+        public Calculate PostAll(string cal)
         {
-            if (double.TryParse(cal.TextboxFirst, out var number))
+            Record.Btn = cal;
+            Calculate c = new Calculate();
+
+            c.TextboxFirst = Record.TextBoxFirst;
+
+            if (double.TryParse(c.TextboxFirst, out var number))
             {
-                cal.TextboxFirst = Math.Sqrt(number).ToString();
+                c.TextboxFirst = Math.Sqrt(number).ToString();
+                Record.TextBoxFirst = c.TextboxFirst;
             }
 
-            return cal;
+            c.Button = Record.Btn;
+            c.Label = Record.Lbl;
+            return c;
         }
     }
 }

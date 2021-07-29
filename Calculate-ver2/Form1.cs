@@ -40,16 +40,7 @@ namespace postfixCal
         {
             Button btn = sender as Button;
 
-            var cal = new Calculate()
-            {
-                Button = btn.Text,
-                Label = lblText.Text,
-                TextboxFirst = textBox_First.Text,
-                TextboxResult = TextBoxApi.Text,
-            };
-
-
-            string json = JsonConvert.SerializeObject(cal);
+            string json = JsonConvert.SerializeObject(btn.Text);
 
             HttpContent contentPost = new StringContent(json, Encoding.UTF8, "application/json"); // 定義json內容
 
