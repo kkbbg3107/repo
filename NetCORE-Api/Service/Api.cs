@@ -21,25 +21,20 @@ namespace NetCORE_Api.Service
         /// <returns>infix字串</returns>
         private static int Priority(int priority, string c)
         {
-            // 定義每個運算子的權重
-            if (c == "(")
-            {
-                return priority = -1;
-            }
-            else if (c == "+" || c == "-")
-            {
-                return priority = 5;
-            }
-            else if (c == "*" || c == "/")
-            {
-                return priority = 9;
-            }
-            else if (c == ")")
-            {
-                return priority = -100;
-            }
+            //var dictPriority = new Dictionary<string, IPriority>()
+            //{
+            //    { ")", new RightMarkPriority()},
+            //    { "+", new AddSubPriority()},
+            //    { "-", new AddSubPriority()},
+            //    { "*", new MulDivPriority()},
+            //    { "/", new MulDivPriority()},
+            //    { "(", new LeftPriority()}
+            //};
 
-            return 0;
+            //IPriority _prior = dictPriority[c];
+            //var result = _prior.GetPriority(c);
+
+            //return result;
         }
 
         /// <summary>
