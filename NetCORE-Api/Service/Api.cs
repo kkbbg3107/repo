@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NetCORE_Api.Operator;
 using NetCORE_Api.PostfixToNum;
 using NetCORE_Api.Priority;
 using NetCORE_Api.ToListServiceData;
@@ -92,20 +93,33 @@ namespace NetCORE_Api.Service
         /// </summary>
         /// <param name="x">輸入的數</param>
         /// <returns>運算子回傳true</returns>
-        private static Boolean IsOperator(string x)
+        private static bool IsOperator(string x)
         {
-            switch (x)
+            var dictionaryOperator = new Dictionary<string, IBoolenOperator>()
             {
-                case "+":
-                case "-":
-                case "/":
-                case "*":
-                    return true;
-                default:
-                    break;
+                {"+", new IsPlus()},
+                {"-", new IsSub()},
+                {"*", new IsMul()},
+                {"/", new IsDiv()}
+            };
+
+            if (IsBoolOperatorTrue(x))
+            {
+                IBoolenOperator boolOperator = dictionaryOperator[x];
+                boolOperator.IsOperator(x);
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 判斷是否為運算子
+        /// </summary>
+        /// <param name="x">傳入的值</param>
+        /// <returns>為運算子回傳true</returns>
+        public static bool IsBoolOperatorTrue(string x)
+        {
+            return x == "+" || x == "-" || x == "/" || x == "*";
         }
 
         /// <summary>
