@@ -7,14 +7,14 @@ namespace NetCORE_Api.PostfixToNum
 {
     public class PlusClass : IObject
     {
-        private ClassObj _post;
+        private ClassObj classObj;
 
         public PlusClass(ClassObj post)
         {
-            _post = post;
+            classObj = post;
         }
 
-        public void GetNum(ClassObj classObj)
+        public void GetNum()
         {
             classObj.num2 = Convert.ToDouble(classObj.stack.Pop());
             classObj.num1 = Convert.ToDouble(classObj.stack.Pop());

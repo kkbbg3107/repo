@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NetCORE_Api.PostfixToNum;
+using NetCORE_Api.ToListServiceData;
 
 namespace NetCORE_Api.Service
 {
@@ -144,55 +145,19 @@ namespace NetCORE_Api.Service
                         {"/", new DivClass(classobj)},
                     };
 
+
+
+                    //var result = (dict.TryGetValue(c, out iobj)) ？ (iobj.GetNum(classobj)) : (classobj.stack.Push(c));
+
                     if (c.Equals("*") || c.Equals("/") || c.Equals("+") || c.Equals("-"))
                     {
                         var iobj = dict[c];
-                        iobj.GetNum(classobj);
+                        iobj.GetNum();
 ;                    }
                     else
                     {
                         classobj.stack.Push(c);
                     }
-                    //if (c.Equals("*"))
-                    //{
-                    //    string n1 = (string)stack.Pop();
-                    //    string n2 = (string)stack.Pop();
-                    //    num2 = Convert.ToDouble(n2);
-                    //    num1 = Convert.ToDouble(n1);
-                    //    ans = num2 * num1;
-                    //    stack.Push(ans.ToString());
-                    //}
-                    //else if (c.Equals("/"))
-                    //{
-                    //    string n1 = (string)stack.Pop();
-                    //    string n2 = (string)stack.Pop();
-                    //    num2 = Convert.ToDouble(n2);
-                    //    num1 = Convert.ToDouble(n1);
-                    //    ans = num2 / num1;
-                    //    stack.Push(ans.ToString());
-                    //}
-                    //else if (c.Equals("+"))
-                    //{
-                    //    string n1 = (string)stack.Pop();
-                    //    string n2 = (string)stack.Pop();
-                    //    num2 = Convert.ToDouble(n2);
-                    //    num1 = Convert.ToDouble(n1);
-                    //    ans = num2 + num1;
-                    //    stack.Push(ans.ToString());
-                    //}
-                    //else if (c.Equals("-"))
-                    //{
-                    //    string n1 = (string)stack.Pop();
-                    //    string n2 = (string)stack.Pop();
-                    //    num2 = Convert.ToDouble(n2);
-                    //    num1 = Convert.ToDouble(n1);
-                    //    ans = num2 - num1;
-                    //    stack.Push(ans.ToString());
-                    //}
-                    //else
-                    //{
-                    //    stack.Push(postfix[j]);
-                    //}
                 }
 
                 classobj.answer = (string)classobj.stack.Pop();
@@ -216,81 +181,179 @@ namespace NetCORE_Api.Service
             var container = string.Empty;
             List<string> list = new List<string>();
             Stack<string> stack = new Stack<string>();
+
+            Use use = new Use();
+            Data data = new Data();
+            data.list = list;
+            data.stack = stack;
+            data.container = container;
+            data.str = str;
+  
             try
             {
                 for (int i = 0; i < infix.Length; i++)
                 {
                     var c = infix[i].ToString();
-                    if (c == "(")
-                    {
-                        list.Add(c);
-                    }
-                    else if (c == ")")
-                    {
-                        if (stack.Count != 0)  // 負號的右括號
-                        {
-                            container += stack.Pop();
-                            container += str;
-                            list.Add(container); // 把負數加到list
-                            container = string.Empty; // 清空字串容器
-                            str = string.Empty;
-                        }
-                        else if (str != string.Empty)
-                        {
-                            list.Add(str);
-                            str = string.Empty;
-                        }
+                    data.c = c;
 
-                        list.Add(c);
-                    }
-                    else if (c == "+" || c == "*" || c == "/")
-                    {
-                        if (str != string.Empty)
-                        {
-                            list.Add(str);
-                            str = string.Empty;
-                        }
+                    var result = use.GetEnum(data);
 
-                        list.Add(c);
-                    }
-                    else if (c == "-")
+                    var dict_toList = new Dictionary<int, IToList>()
                     {
-                        if (list.Count != 0 && list[list.Count - 1].ToString() == "(" && str != string.Empty) // 把減號加上 前面非負數
-                        {
-                            list.Add(str);
-                            str = string.Empty;
-                            list.Add(c);
-                        }
-                        else if (list.Count != 0 && list[list.Count - 1].ToString() == "(") // 負數
-                        {
-                            stack.Push(c);
-                        }
-                        else if (list.Count != 0 && list[list.Count - 1].ToString() == ")") // 減號前面右括號時
-                        {
-                            list.Add(c);
-                        }
-                        else if (list.Count == 0)
-                        {
-                            list.Add(str);
-                            str = string.Empty;
-                            list.Add(c);
-                        }
-                        else
-                        {
-                            list.Add(str);
-                            str = string.Empty;
-                            list.Add(c);
-                        }
-                    }
-                    else
-                    {
-                        str += c;
-                    }
+                        {1, new leftBrackets(data)},
+                        {2, new RightAndStackNotZero(data)},
+                        {3, new RightBracketAndStrNotNull(data)},
+                        {11, new RightBrackets(data)},
+                        {4, new PlusDivMulAndStrNotNull(data)},
+                        {5, new PlusDivMul(data)},
+                        {6, new SubAllFliter(data)},
+                        {7, new SubLeftBrackets(data)},
+                        {8, new SubRightBrackets(data)},
+                        {9, new SubCountZero(data)},
+                        {10, new SubMarks(data)},
+                        {0, new NumInput(data)},
+                    };
+
+
+                    var iToList = dict_toList[result];
+                    iToList.GetResult();
+
+
+
+                    //if (c == "(")
+                    //{
+                    //    list.Add(c);
+                    //}
+
+
+                    ////else if (c == ")")                         //  修改成平行的 if else 然後 都鍵成物件
+                    ////{
+                    ////    if (stack.Count != 0)  // 負號的右括號
+                    ////    {
+                    ////        container += stack.Pop();
+                    ////        container += str;
+                    ////        list.Add(container); // 把負數加到list
+                    ////        container = string.Empty; // 清空字串容器
+                    ////        str = string.Empty;
+                    ////    }
+                    ////    else if (str != string.Empty)
+                    ////    {
+                    ////        list.Add(str);
+                    ////        str = string.Empty;
+                    ////    }
+
+                    ////    list.Add(c);
+                    ////}
+
+
+
+
+                    //else if (c == ")" && stack.Count != 0)
+                    //{
+                    //    container += stack.Pop();
+                    //    container += str;
+                    //    list.Add(container); // 把負數加到list
+                    //    container = string.Empty; // 清空字串容器
+                    //    str = string.Empty;
+
+                    //    list.Add(c);
+                    //}
+                    //else if (c == ")" && str != string.Empty)
+                    //{
+                    //    list.Add(str);
+                    //    str = string.Empty;
+
+                    //    list.Add(c);
+                    //}
+                    //else if (c == ")")
+                    //{
+                    //    list.Add(c);
+                    //}
+                    ////else if (c == "+" || c == "*" || c == "/")
+                    ////{
+                    ////    if (str != string.Empty)
+                    ////    {
+                    ////        list.Add(str);
+                    ////        str = string.Empty;
+                    ////    }
+
+                    ////    list.Add(c);
+                    ////}
+                    //else if (c == "+" || c == "*" || c == "/" && str != string.Empty)
+                    //{
+                    //    list.Add(str);
+                    //    str = string.Empty;
+
+                    //    list.Add(c);
+                    //}
+                    //else if (c == "+" || c == "*" || c == "/")
+                    //{
+                    //    list.Add(c);
+                    //}
+                    //else if (c == "-" && list.Count != 0 && list[list.Count - 1].ToString() == "(" && str != string.Empty)
+                    //{
+                    //    list.Add(str);
+                    //    str = string.Empty;
+                    //    list.Add(c);
+                    //}
+                    //else if (c == "-" && list.Count != 0 && list[list.Count - 1].ToString() == "(")
+                    //{
+                    //    stack.Push(c);
+                    //}
+                    //else if (c == "-" && list.Count != 0 && list[list.Count - 1].ToString() == ")")
+                    //{
+                    //    list.Add(c);
+                    //}
+                    //else if (c == "-" && list.Count == 0)
+                    //{
+                    //    list.Add(str);
+                    //    str = string.Empty;
+                    //    list.Add(c);
+                    //}
+                    //else if (c == "-")
+                    //{
+                    //    list.Add(str);
+                    //    str = string.Empty;
+                    //    list.Add(c);
+                    //}
+                    ////else if (c == "-")
+                    ////{
+                    ////    if (list.Count != 0 && list[list.Count - 1].ToString() == "(" && str != string.Empty) // 把減號加上 前面非負數
+                    ////    {
+                    ////        list.Add(str);
+                    ////        str = string.Empty;
+                    ////        list.Add(c);
+                    ////    }
+                    ////    else if (list.Count != 0 && list[list.Count - 1].ToString() == "(") // 負數
+                    ////    {
+                    ////        stack.Push(c);
+                    ////    }
+                    ////    else if (list.Count != 0 && list[list.Count - 1].ToString() == ")") // 減號前面右括號時
+                    ////    {
+                    ////        list.Add(c);
+                    ////    }
+                    ////    else if (list.Count == 0)
+                    ////    {
+                    ////        list.Add(str);
+                    ////        str = string.Empty;
+                    ////        list.Add(c);
+                    ////    }
+                    ////    else
+                    ////    {
+                    ////        list.Add(str);
+                    ////        str = string.Empty;
+                    ////        list.Add(c);
+                    ////    }
+                    ////}
+                    //else
+                    //{
+                    //    str += c;
+                    //}
                 }
 
-                if (str != string.Empty)
+                if (data.str != string.Empty)
                 {
-                    list.Add(str);
+                    data.list.Add(data.str);
                 }
             }
             catch (Exception ex)
@@ -298,7 +361,7 @@ namespace NetCORE_Api.Service
                 Console.WriteLine(ex);
             }
 
-            return list;
+            return data.list;
         }
 
         /// <summary>

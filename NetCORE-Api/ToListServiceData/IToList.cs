@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCORE_Api.PostfixToNum
+namespace NetCORE_Api.ToListServiceData
 {
-    public interface IObject
+    public interface IToList
     {
-        void GetNum();
+        void GetResult();
     }
 }
