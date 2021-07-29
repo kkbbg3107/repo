@@ -18,7 +18,7 @@ namespace NetCORE_Api.PostfixToNum
         {
             classObj.num2 = Convert.ToDouble(classObj.stack.Pop());
             classObj.num1 = Convert.ToDouble(classObj.stack.Pop());
-            classObj.ans = classObj.num2 - classObj.num1;
+            classObj.ans = classObj.num1 - classObj.num2;
             classObj.stack.Push((classObj.ans.ToString()));
         }
     }
