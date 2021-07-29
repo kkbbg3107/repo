@@ -131,17 +131,11 @@ namespace NetCORE_Api.Service
         private static string PostfixToNum(List<string> postfix)
         {
             ClassObj classobj = new ClassObj();
-            string answer = string.Empty;
-            double num1 = 0;
-            double num2 = 0;
-            double ans = 0;
-            Stack<string> stack = new Stack<string>();
-
-            classobj.stack = stack;
-            classobj.ans = ans;
-            classobj.num1 = num1;
-            classobj.num2 = num2;
-            classobj.answer = answer;
+            classobj.stack = new Stack<string>();
+            classobj.ans = 0;
+            classobj.num1 = 0;
+            classobj.num2 = 0;
+            classobj.answer = string.Empty;
             try
             {
                 for (int j = 0; j < postfix.Count; j++)
@@ -155,10 +149,6 @@ namespace NetCORE_Api.Service
                         {"*", new MulClass(classobj)},
                         {"/", new DivClass(classobj)},
                     };
-
-
-
-                    //var result = (dict.TryGetValue(c, out iobj)) ？ (iobj.GetNum(classobj)) : (classobj.stack.Push(c));
 
                     if (c.Equals("*") || c.Equals("/") || c.Equals("+") || c.Equals("-"))
                     {
@@ -189,17 +179,12 @@ namespace NetCORE_Api.Service
         /// <returns>依照每個符號定義的列表</returns>
         public List<string> ToListService(string infix)
         {
-            var str = string.Empty;
-            var container = string.Empty;
-            List<string> list = new List<string>();
-            Stack<string> stack = new Stack<string>();
-
             Use use = new Use();
             Data data = new Data();
-            data.list = list;
-            data.stack = stack;
-            data.container = container;
-            data.str = str;
+            data.list = new List<string>();
+            data.stack = new Stack<string>();
+            data.container = string.Empty;
+            data.str = string.Empty;
 
             try
             {
@@ -254,28 +239,19 @@ namespace NetCORE_Api.Service
         /// <returns>後序表達式集合</returns>
         private static List<string> ToPostfix(List<string> infix)
         {
-            List<string> postList = new List<string>(); // 後序表達示
-
-            Stack<string> stack = new Stack<string>();
-
-            int recordLen = infix.Count; // 紀錄中序長度
-
-            string temp = string.Empty; // 臨時變數 => 為了區分數字>10 和 是否有小數點  一碰到運算子就把前面的數字合併 塞進postfix 
-
             ToPostfixData data = new ToPostfixData();
             ClassJudge judge = new ClassJudge();
-            data.Stack = stack;
-            data.Temp = temp;
-            data.PostList = postList;
-            data.RecordLen = recordLen;
+            data.Stack = new Stack<string>();
+            data.Temp = string.Empty;  // 臨時變數 => 為了區分數字>10 和 是否有小數點  一碰到運算子就把前面的數字合併 塞進postfix 
+            data.PostList = new List<string>(); // 後序表達示
+            data.RecordLen = infix.Count; // 紀錄中序長度
 
-             try
+            try
             {
-                for (int i = 0; i < infix.Count; i++)
+                for (data.Times = 0; data.Times < infix.Count; data.Times++)
                 {
 
-                    var c = infix[i];
-                    data.Times = i;
+                    var c = infix[data.Times];
                     data.Text = c;
                     if (c == "+" || c == "-" || c == "*" || c == "/" || c == "(" || c == ")")
                     {
@@ -308,58 +284,6 @@ namespace NetCORE_Api.Service
                         data.Temp += data.Text;
                     }
 
-                    //if (c == "+" || c == "-" || c == "*" || c == "/" || c == "(" || c == ")")
-                    //{
-                    //    int prior = Priority(c); // 賦予優先權
-
-                    //    if (temp != string.Empty)
-                    //    {
-                    //        postList.Add(temp);
-                    //        temp = string.Empty;
-                    //    }
-
-                    //    if (prior == -1)
-                    //    {
-                    //        stack.Push(c);
-                    //    }
-                    //    else if (prior == 5 && stack.Count == 0 || stack.Peek() == "(")
-                    //    {
-                    //        stack.Push(c);
-                    //    }
-                    //    else if (prior == 5 && stack.Peek() == "*" || stack.Peek() == "/" || stack.Peek() == "+" || stack.Peek() == "-")
-                    //    {
-                    //        postList.Add(stack.Pop().ToString());
-                    //        i--; // 重新回到這個運算子在run一次
-                    //        recordLen++; // 記數也要加回去
-                    //    }
-                    //    else if (prior == -100)
-                    //    {
-                    //        while (stack.Peek() != "(")
-                    //        {
-                    //            postList.Add(stack.Pop().ToString()); // 直到stack裡遇到'('把上面的運算子都pop出來
-                    //        }
-
-                    //        stack.Pop(); // 遇到的'('也要移掉
-                    //    }
-                    //    else if (prior == 9 && stack.Count == 0)
-                    //    {
-                    //        stack.Push(c);
-                    //    }
-                    //    else if (prior == 9 && stack.Peek().ToString() == "*" || stack.Peek().ToString() == "/")
-                    //    {
-                    //        postList.Add(stack.Pop().ToString());
-                    //        stack.Push(c);
-                    //    }
-                    //    else if (prior == 9)
-                    //    {
-                    //        stack.Push(c);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    temp += c;
-                    //}
-
                     data.RecordLen--; // 每循環一次 記數-1 
 
                     if (data.RecordLen == 0)
@@ -382,95 +306,14 @@ namespace NetCORE_Api.Service
                 Console.WriteLine(ex);
             }
 
-
-            //try
-            //{
-            //    for (int i = 0; i < infix.Count; i++)
-            //    {
-            //        var c = infix[i];
-            //        if (c == "+" || c == "-" || c == "*" || c == "/" || c == "(" || c == ")")
-            //        {
-            //            int prior = Priority(c); // 賦予優先權
-
-            //            if (temp != string.Empty)
-            //            {
-            //                postList.Add(temp);
-            //                temp = string.Empty;
-            //            }
-
-            //            if (prior == -1)
-            //            {
-            //                stack.Push(c);
-            //            }
-            //            else if (prior == 5)
-            //            {
-            //                if (stack.Count == 0 || stack.Peek() == "(")
-            //                {
-            //                    stack.Push(c);
-            //                }
-            //                else if (stack.Peek() == "*" || stack.Peek() == "/" || stack.Peek() == "+" || stack.Peek() == "-")
-            //                {
-            //                    postList.Add(stack.Pop().ToString());
-            //                    i--; // 重新回到這個運算子在run一次
-            //                    recordLen++; // 記數也要加回去
-            //                }
-            //            }
-            //            else if (prior == -100)
-            //            {
-            //                while (stack.Peek() != "(")
-            //                {
-            //                    postList.Add(stack.Pop().ToString()); // 直到stack裡遇到'('把上面的運算子都pop出來
-            //                }
-
-            //                stack.Pop(); // 遇到的'('也要移掉
-            //            }
-            //            else if (prior == 9)
-            //            {
-            //                if (stack.Count == 0) // 遇到'*' '/'運算子
-            //                {
-            //                    stack.Push(c);
-            //                }
-            //                else if (stack.Peek().ToString() == "*" || stack.Peek().ToString() == "/")
-            //                {
-            //                    postList.Add(stack.Pop().ToString());
-            //                    stack.Push(c);
-            //                }
-            //                else
-            //                {
-            //                    stack.Push(c);
-            //                }
-            //            }
-            //        }
-            //        else
-            //        {
-            //            temp += c;
-            //        }
-
-            //        recordLen--; // 每循環一次 記數-1 
-
-            //        if (recordLen == 0)
-            //        {
-            //            while (stack.Count != 0)
-            //            {
-            //                if (temp != string.Empty)
-            //                {
-            //                    postList.Add(temp);
-            //                    temp = string.Empty;
-            //                }
-
-            //                postList.Add(stack.Pop().ToString());
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex);
-            //}
-
             return data.PostList;
         }
 
+        /// <summary>
+        /// 實作api按鈕方法
+        /// </summary>
+        /// <param name="cal">api按鈕</param>
+        /// <returns>前中後序+結果值</returns>
         public Calculate PostAll(string cal)
         {
             Record.Btn = cal;

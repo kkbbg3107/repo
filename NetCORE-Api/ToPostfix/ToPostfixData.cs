@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.ToPostfix
 {
+    /// <summary>
+    /// 外部物件 給ToPostfix方法使用
+    /// </summary>
     public class ToPostfixData
     {
         public List<string> PostList { get; set; }

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.PostfixToNum
 {
+    /// <summary>
+    /// 建立物件給 APiService的 IsOperator方法使用
+    /// </summary>
     public class ClassObj
     {
         public string answer { get; set; }
