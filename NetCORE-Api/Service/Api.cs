@@ -9,6 +9,7 @@ using NetCORE_Api.Operator;
 using NetCORE_Api.PostfixToNum;
 using NetCORE_Api.Priority;
 using NetCORE_Api.ToListServiceData;
+using NetCORE_Api.ToPostfix;
 
 namespace NetCORE_Api.Service
 {
@@ -21,7 +22,7 @@ namespace NetCORE_Api.Service
         /// <param name="priority">優先權大小</param>
         /// <param name="c">待分析的數字</param>
         /// <returns>infix字串</returns>
-        private static int Priority(int priority, string c)
+        private static int Priority(string c)
         {
             var dictPriority = new Dictionary<string, IPriority>()
             {
@@ -225,7 +226,6 @@ namespace NetCORE_Api.Service
                         {0, new NumInput(data)},
                     };
 
-
                     var iToList = dict_toList[result];
                     iToList.GetResult();
                 }
@@ -254,8 +254,6 @@ namespace NetCORE_Api.Service
         /// <returns>後序表達式集合</returns>
         private static List<string> ToPostfix(List<string> infix)
         {
-            int priority = 0; // 權重
-
             List<string> postList = new List<string>(); // 後序表達示
 
             Stack<string> stack = new Stack<string>();
@@ -264,126 +262,117 @@ namespace NetCORE_Api.Service
 
             string temp = string.Empty; // 臨時變數 => 為了區分數字>10 和 是否有小數點  一碰到運算子就把前面的數字合併 塞進postfix 
 
-            try
+            ToPostfixData data = new ToPostfixData();
+            ClassJudge judge = new ClassJudge();
+            data.Stack = stack;
+            data.Temp = temp;
+            data.PostList = postList;
+            data.RecordLen = recordLen;
+
+             try
             {
                 for (int i = 0; i < infix.Count; i++)
                 {
+
                     var c = infix[i];
+                    data.Times = i;
+                    data.Text = c;
                     if (c == "+" || c == "-" || c == "*" || c == "/" || c == "(" || c == ")")
                     {
-                        int prior = Priority(priority, c); // 賦予優先權
+                        int prior = Priority(c); // 賦予優先權
+                        data.Prior = prior;
 
-                        if (prior == -1)
+                        if (data.Temp != string.Empty)
                         {
-                            if (temp != string.Empty)
-                            {
-                                postList.Add(temp);
-                                temp = string.Empty;
-                            }
-
-                            stack.Push(c);
+                            data.PostList.Add(data.Temp);
+                            data.Temp = string.Empty;
                         }
-                        else if (prior == 5)
+                        var result = judge.GetToken(data);
+
+                        var dict_ToPotfix = new Dictionary<int, IToPostfix>()
                         {
-                            if (temp != string.Empty)
-                            {
-                                postList.Add(temp);
-                                temp = string.Empty;
-                            }
+                            {1, new PriorNegativeOne(data)},
+                            {2, new PriorFiveAndCountZeroLeftBrackets(data)},
+                            {3, new PriorFiveAndOperator(data)},
+                            {4, new PriorHundred(data)},
+                            {5, new PriorNineAndCountZero(data)},
+                            {6, new PriorNineMulAndDiv(data)},
+                            {7, new PriorNine(data)},
+                        };
 
-                            if (stack.Count == 0)
-                            {
-                                stack.Push(c);
-                            }
-                            else if (stack.Peek() == "(")
-                            {
-                                // '+' '-' 權重> '('
-                                stack.Push(c);
-                            }
-                            else if (stack.Peek() == "*" || stack.Peek() == "/")
-                            {
-                                postList.Add(stack.Pop().ToString());
-                                i--; // 重新回到這個運算子在run一次
-                                recordLen++; // 記數也要加回去
-                            }
-                            else if (stack.Peek() == "+" || stack.Peek() == "-")
-                            {
-                                postList.Add(stack.Pop().ToString());
-                                i--;
-                                recordLen++;
-                            }
-                        }
-                        else if (prior == -100)
-                        {
-                            if (temp != string.Empty)
-                            {
-                                postList.Add(temp);
-                                temp = string.Empty;
-                            }
-
-                            while (stack.Peek() != "(")
-                            {
-                                // 直到stack裡遇到'('把上面的運算子都pop出來
-                                postList.Add(stack.Pop().ToString());
-                            }
-
-                            stack.Pop(); // 遇到的'('也要移掉
-                        }
-                        else if (prior == 9)
-                        {
-                            // 遇到'*' '/'運算子
-                            if (stack.Count == 0)
-                            {
-                                if (temp != string.Empty)
-                                {
-                                    postList.Add(temp);
-                                    temp = string.Empty;
-                                }
-
-                                stack.Push(c);
-                            }
-                            else if (stack.Peek().ToString() == "*" || stack.Peek().ToString() == "/")
-                            {
-                                if (temp != string.Empty)
-                                {
-                                    postList.Add(temp);
-                                    temp = string.Empty;
-                                }
-
-                                postList.Add(stack.Pop().ToString());
-                                stack.Push(c);
-                            }
-                            else
-                            {
-                                if (temp != string.Empty)
-                                {
-                                    postList.Add(temp);
-                                    temp = string.Empty;
-                                }
-
-                                stack.Push(c);
-                            }
-                        }
+                        var iToPostfix = dict_ToPotfix[result];
+                        iToPostfix.GetPostfix();
                     }
                     else
                     {
-                        temp += c;
-                        // postfix += c; 數值直接帶進postfix
+                        data.Temp += data.Text;
                     }
 
-                    recordLen--; // 每循環一次 記數-1 
+                    //if (c == "+" || c == "-" || c == "*" || c == "/" || c == "(" || c == ")")
+                    //{
+                    //    int prior = Priority(c); // 賦予優先權
 
-                    if (recordLen == 0)
+                    //    if (temp != string.Empty)
+                    //    {
+                    //        postList.Add(temp);
+                    //        temp = string.Empty;
+                    //    }
+
+                    //    if (prior == -1)
+                    //    {
+                    //        stack.Push(c);
+                    //    }
+                    //    else if (prior == 5 && stack.Count == 0 || stack.Peek() == "(")
+                    //    {
+                    //        stack.Push(c);
+                    //    }
+                    //    else if (prior == 5 && stack.Peek() == "*" || stack.Peek() == "/" || stack.Peek() == "+" || stack.Peek() == "-")
+                    //    {
+                    //        postList.Add(stack.Pop().ToString());
+                    //        i--; // 重新回到這個運算子在run一次
+                    //        recordLen++; // 記數也要加回去
+                    //    }
+                    //    else if (prior == -100)
+                    //    {
+                    //        while (stack.Peek() != "(")
+                    //        {
+                    //            postList.Add(stack.Pop().ToString()); // 直到stack裡遇到'('把上面的運算子都pop出來
+                    //        }
+
+                    //        stack.Pop(); // 遇到的'('也要移掉
+                    //    }
+                    //    else if (prior == 9 && stack.Count == 0)
+                    //    {
+                    //        stack.Push(c);
+                    //    }
+                    //    else if (prior == 9 && stack.Peek().ToString() == "*" || stack.Peek().ToString() == "/")
+                    //    {
+                    //        postList.Add(stack.Pop().ToString());
+                    //        stack.Push(c);
+                    //    }
+                    //    else if (prior == 9)
+                    //    {
+                    //        stack.Push(c);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    temp += c;
+                    //}
+
+                    data.RecordLen--; // 每循環一次 記數-1 
+
+                    if (data.RecordLen == 0)
                     {
-                        while (stack.Count != 0)
+                        while (data.Stack.Count != 0)
                         {
-                            if (temp != string.Empty)
+                            if (data.Temp != string.Empty)
                             {
-                                postList.Add(temp);
-                                temp = string.Empty;
+                                data.PostList.Add(data.Temp);
+                                data.Temp = string.Empty;
                             }
 
-                            postList.Add(stack.Pop().ToString());
+                            data.PostList.Add(data.Stack.Pop().ToString());
                         }
                     }
                 }
@@ -393,27 +382,95 @@ namespace NetCORE_Api.Service
                 Console.WriteLine(ex);
             }
 
-            return postList;
+
+            //try
+            //{
+            //    for (int i = 0; i < infix.Count; i++)
+            //    {
+            //        var c = infix[i];
+            //        if (c == "+" || c == "-" || c == "*" || c == "/" || c == "(" || c == ")")
+            //        {
+            //            int prior = Priority(c); // 賦予優先權
+
+            //            if (temp != string.Empty)
+            //            {
+            //                postList.Add(temp);
+            //                temp = string.Empty;
+            //            }
+
+            //            if (prior == -1)
+            //            {
+            //                stack.Push(c);
+            //            }
+            //            else if (prior == 5)
+            //            {
+            //                if (stack.Count == 0 || stack.Peek() == "(")
+            //                {
+            //                    stack.Push(c);
+            //                }
+            //                else if (stack.Peek() == "*" || stack.Peek() == "/" || stack.Peek() == "+" || stack.Peek() == "-")
+            //                {
+            //                    postList.Add(stack.Pop().ToString());
+            //                    i--; // 重新回到這個運算子在run一次
+            //                    recordLen++; // 記數也要加回去
+            //                }
+            //            }
+            //            else if (prior == -100)
+            //            {
+            //                while (stack.Peek() != "(")
+            //                {
+            //                    postList.Add(stack.Pop().ToString()); // 直到stack裡遇到'('把上面的運算子都pop出來
+            //                }
+
+            //                stack.Pop(); // 遇到的'('也要移掉
+            //            }
+            //            else if (prior == 9)
+            //            {
+            //                if (stack.Count == 0) // 遇到'*' '/'運算子
+            //                {
+            //                    stack.Push(c);
+            //                }
+            //                else if (stack.Peek().ToString() == "*" || stack.Peek().ToString() == "/")
+            //                {
+            //                    postList.Add(stack.Pop().ToString());
+            //                    stack.Push(c);
+            //                }
+            //                else
+            //                {
+            //                    stack.Push(c);
+            //                }
+            //            }
+            //        }
+            //        else
+            //        {
+            //            temp += c;
+            //        }
+
+            //        recordLen--; // 每循環一次 記數-1 
+
+            //        if (recordLen == 0)
+            //        {
+            //            while (stack.Count != 0)
+            //            {
+            //                if (temp != string.Empty)
+            //                {
+            //                    postList.Add(temp);
+            //                    temp = string.Empty;
+            //                }
+
+            //                postList.Add(stack.Pop().ToString());
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex);
+            //}
+
+            return data.PostList;
         }
 
-        //public Calculate PostAll(string cal)
-        //{
-
-        //    var p = ToListService(Record.Lbl);
-        //    var postList = ToPostfix(p); // 後序表達式
-        //    var result = PostfixToNum(postList); // 運算結果
-        //    Response data = new Response();
-        //    var postfix = string.Join(",", postList.ToArray());
-        //    var prefix = PostfixToPrefix(postList);
-
-        //    data.Prefix = prefix;
-        //    data.Formula = Record.Lbl;
-        //    data.Postfix = postfix;
-        //    data.Result = result;
-
-        //    Record.TextBoxResult = $"PostFix : {data.Postfix}, Formula : {data.Formula}, Prefix : {data.Prefix}, Result : {data.Result}";
-        //    return Record;
-        //}
         public Calculate PostAll(string cal)
         {
             Record.Btn = cal;
