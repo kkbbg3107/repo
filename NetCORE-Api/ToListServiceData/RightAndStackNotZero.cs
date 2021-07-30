@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.ToListServiceData
 {
+    /// <summary>
+    /// 按鈕為")" stack不為空
+    /// </summary>
     public class RightAndStackNotZero : IToList
 
     {
@@ -16,13 +19,13 @@ namespace NetCORE_Api.ToListServiceData
         }
         public void GetResult()
         {
-            _data.container += _data.stack.Pop();
-            _data.container += _data.str;
-            _data.list.Add(_data.container); // 把負數加到list
-            _data.container = string.Empty; // 清空字串容器
-            _data.str = string.Empty;
+            _data.Container += _data.Stack.Pop();
+            _data.Container += _data.Str;
+            _data.List.Add(_data.Container); // 把負數加到list
+            _data.Container = string.Empty; // 清空字串容器
+            _data.Str = string.Empty;
 
-            _data.list.Add(_data.c);
+            _data.List.Add(_data.Text);
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.ToListServiceData
 {
+    /// <summary>
+    /// 按鈕為"-" 且list不為空list第一個元素為"("
+    /// </summary>
     public class SubLeftBrackets : IToList
     {
         private Data _data;
@@ -15,7 +18,7 @@ namespace NetCORE_Api.ToListServiceData
         }
         public void GetResult()
         {
-            _data.stack.Push(_data.c);
+            _data.Stack.Push(_data.Text);
         }
     }
 }

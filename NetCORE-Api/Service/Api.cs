@@ -20,9 +20,9 @@ namespace NetCORE_Api.Service
         /// 優先權判定
         /// </summary>
         /// <param name="priority">優先權大小</param>
-        /// <param name="c">待分析的數字</param>
+        /// <param name="Text">待分析的數字</param>
         /// <returns>infix字串</returns>
-        private static int Priority(string c)
+        private static int Priority(string Text)
         {
             var dictPriority = new Dictionary<string, IPriority>()
             {
@@ -34,8 +34,8 @@ namespace NetCORE_Api.Service
                 { "(", new LeftPriority()}
             };
 
-            IPriority _prior = dictPriority[c];
-            var result = _prior.GetPriority(c);
+            IPriority _prior = dictPriority[Text];
+            var result = _prior.GetPriority(Text);
 
             return result;
         }
@@ -48,27 +48,29 @@ namespace NetCORE_Api.Service
         private static string PostfixToPrefix(List<string> postfix)
         {
             Stack s = new Stack();
-            string res;
+            string res = string.Empty;
+            string op1 = string.Empty;
+            string op2 = string.Empty;
+            string temp = string.Empty;
             try
             {
                 for (int i = 0; i < postfix.Count; i++)
                 {
+                    string text = postfix[i];
+
                     if (IsOperator(postfix[i]))
-                    {
-                        string op1 = (string)s.Peek();
+                    { 
+                        op1 = (string)s.Peek();
                         s.Pop();
-                        string op2 = (string)s.Peek();
+                        op2 = (string)s.Peek();
                         s.Pop();
 
-                        // concat the operands and operator
-                        string temp = postfix[i] + op2 + op1;
+                        temp = postfix[i] + op2 + op1;
 
-                        // Push String temp back to stack
                         s.Push(temp);
                     }
                     else
                     {
-                        // Push the operand to the stack
                         s.Push(postfix[i] + string.Empty);
                     }
                 }
@@ -108,8 +110,9 @@ namespace NetCORE_Api.Service
             {
                 IBoolenOperator boolOperator = dictionaryOperator[x];
                 boolOperator.IsOperator(x);
+                return true;
             }
-
+            
             return false;
         }
 
@@ -131,16 +134,16 @@ namespace NetCORE_Api.Service
         private static string PostfixToNum(List<string> postfix)
         {
             ClassObj classobj = new ClassObj();
-            classobj.stack = new Stack<string>();
-            classobj.ans = 0;
-            classobj.num1 = 0;
-            classobj.num2 = 0;
-            classobj.answer = string.Empty;
+            classobj.Stack = new Stack<string>();
+            classobj.Ans = 0;
+            classobj.Num1 = 0;
+            classobj.Num2 = 0;
+            classobj.Answer = string.Empty;
             try
             {
                 for (int j = 0; j < postfix.Count; j++)
                 {
-                    string c = postfix[j]; // 可支援轉型
+                    string text = postfix[j]; // 可支援轉型
 
                     var dict = new Dictionary<string, IObject>()
                     {
@@ -150,26 +153,24 @@ namespace NetCORE_Api.Service
                         {"/", new DivClass(classobj)},
                     };
 
-                    if (c.Equals("*") || c.Equals("/") || c.Equals("+") || c.Equals("-"))
+                    if (IsBoolOperatorTrue(text))
                     {
-                        var iobj = dict[c];
-                        iobj.GetNum();
-                        ;
+                        dict[text].GetNum();
                     }
                     else
                     {
-                        classobj.stack.Push(c);
+                        classobj.Stack.Push(text);
                     }
                 }
 
-                classobj.answer = (string)classobj.stack.Pop();
+                classobj.Answer = (string)classobj.Stack.Pop();
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
 
-            return classobj.answer;
+            return classobj.Answer;
         }
 
         /// <summary>
@@ -181,17 +182,16 @@ namespace NetCORE_Api.Service
         {
             Use use = new Use();
             Data data = new Data();
-            data.list = new List<string>();
-            data.stack = new Stack<string>();
-            data.container = string.Empty;
-            data.str = string.Empty;
+            data.List = new List<string>();
+            data.Stack = new Stack<string>();
+            data.Container = string.Empty;
+            data.Str = string.Empty;
 
             try
             {
                 for (int i = 0; i < infix.Length; i++)
                 {
-                    var c = infix[i].ToString();
-                    data.c = c;
+                    data.Text = infix[i].ToString();
 
                     var result = use.GetEnum(data);
 
@@ -215,9 +215,9 @@ namespace NetCORE_Api.Service
                     iToList.GetResult();
                 }
 
-                if (data.str != string.Empty)
+                if (data.Str != string.Empty)
                 {
-                    data.list.Add(data.str);
+                    data.List.Add(data.Str);
                 }
             }
             catch (Exception ex)
@@ -225,7 +225,7 @@ namespace NetCORE_Api.Service
                 Console.WriteLine(ex);
             }
 
-            return data.list;
+            return data.List;
         }
 
         /// <summary>
@@ -251,11 +251,11 @@ namespace NetCORE_Api.Service
                 for (data.Times = 0; data.Times < infix.Count; data.Times++)
                 {
 
-                    var c = infix[data.Times];
-                    data.Text = c;
-                    if (c == "+" || c == "-" || c == "*" || c == "/" || c == "(" || c == ")")
+                    var Text = infix[data.Times];
+                    data.Text = Text;
+                    if (Text == "+" || Text == "-" || Text == "*" || Text == "/" || Text == "(" || Text == ")")
                     {
-                        int prior = Priority(c); // 賦予優先權
+                        int prior = Priority(Text); // 賦予優先權
                         data.Prior = prior;
 
                         if (data.Temp != string.Empty)

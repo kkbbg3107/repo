@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.ToListServiceData
 {
+    /// <summary>
+    /// ToListService方法使用之物件
+    /// </summary>
     public class Data
     {
-        public string str { get; set; }
-        public string container { get; set; }
-        public List<string> list { get; set; }
-        public Stack<string> stack { get; set; }
-        public  string c { get; set; }
+        public string Str { get; set; }
+        public string Container { get; set; }
+        public List<string> List { get; set; }
+        public Stack<string> Stack { get; set; }
+        public  string Text { get; set; }
     }
 }

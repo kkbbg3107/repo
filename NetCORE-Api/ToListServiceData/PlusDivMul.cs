@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.ToListServiceData
 {
+    /// <summary>
+    /// 按鈕為加減除
+    /// </summary>
     public class PlusDivMul : IToList
     {
         private Data _data;
@@ -15,7 +18,7 @@ namespace NetCORE_Api.ToListServiceData
         }
         public void GetResult()
         {
-            _data.list.Add(_data.c);
+            _data.List.Add(_data.Text);
         }
     }
 }

@@ -10,10 +10,10 @@ namespace NetCORE_Api.PostfixToNum
     /// </summary>
     public class ClassObj
     {
-        public string answer { get; set; }
-        public  double num1 { get; set; }
-        public  double num2 { get; set; }
-        public  double ans { get; set; }
-        public  Stack<string>? stack { get; set; }
+        public string Answer { get; set; }
+        public  double Num1 { get; set; }
+        public  double Num2 { get; set; }
+        public  double Ans { get; set; }
+        public  Stack<string>? Stack { get; set; }
     }
 }

@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.ToListServiceData
 {
+    /// <summary>
+    /// 按鈕為數字時
+    /// </summary>
     public class NumInput : IToList
     {
         private Data _data;
@@ -15,7 +18,7 @@ namespace NetCORE_Api.ToListServiceData
         }
         public void GetResult()
         {
-            _data.str += _data.c;
+            _data.Str += _data.Text;
         }
     }
 }
