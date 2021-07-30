@@ -36,8 +36,32 @@ namespace WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
 
-            services.AddSingleton<IReadOnlyDictionary<string, IFactory>>(new Dictionary<string, IFactory>());
-
+            services.AddSingleton<IReadOnlyDictionary<string, IFactory>>(new Dictionary<string, IFactory>()
+            {
+                {"api", new Api()},
+                {"Back", new Back()},
+                {"C", new Clear()},
+                {".", new Dot()},
+                {"+", new Plus()},
+                {"-", new Sub()},
+                {"*", new Multi()},
+                {"/", new Div()},
+                {"=", new Equal()},
+                {"+/-", new Negative()},
+                {"(", new LeftMark()},
+                {")", new RightMark()},
+                {"กิ", new SquareRoot()},
+                {"0", new Zero()},
+                {"1", new One()},
+                {"2", new Second()},
+                {"3", new Three()},
+                {"4", new Four()},
+                {"5", new Five()},
+                {"6", new Six()},
+                {"7", new Seven()},
+                {"8", new Eight()},
+                {"9", new Nine()},
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -50,32 +50,7 @@ namespace NetCORE_Api.ApiController
             _logger.LogWarning(2001, inform.ToString());
 
             // 建立字典讀取指定按紐實作
-            _dictionary = new Dictionary<string, IFactory>()
-            {
-                { "api", new Api() },
-                { "Back", new Back() },
-                { "C", new Clear() },
-                { ".", new Dot() },
-                { "+", new Plus() },
-                { "-", new Sub() },
-                { "*", new Multi() },
-                { "/", new Div() },
-                { "=", new Equal() },
-                { "+/-", new Negative() },
-                { "(", new LeftMark() },
-                { ")", new RightMark() },
-                { "√", new SquareRoot() },
-                { "0", new Zero() },
-                { "1", new One() },
-                { "2", new Second() },
-                { "3", new Three() },
-                { "4", new Four() },
-                { "5", new Five() },
-                { "6", new Six() },
-                { "7", new Seven() },
-                { "8", new Eight() },
-                { "9", new Nine() },
-            };
+            
 
             // 依賴注入服務
             _all = _dictionary[calButton];
