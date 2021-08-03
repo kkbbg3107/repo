@@ -267,6 +267,7 @@ namespace NetCORE_Api
                 Console.WriteLine(ex);
             }
 
+            //var res = data.List.Where(x => x != "(" && x != ")").Select(x => x).ToList();
             return data.List;
         }
 
@@ -348,8 +349,8 @@ namespace NetCORE_Api
                 Console.WriteLine(ex);
             }
 
+
             var res = data.PostList.Where(x => x != "(" && x != ")").Select(x => x).ToList();
-         
             return res;
         }
     }

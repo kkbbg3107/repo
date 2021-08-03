@@ -35,8 +35,8 @@ namespace NetCORE_Api.ToListServiceData
                 return 5;
             }
 
-            if (data.Text == "-" && data.List.Count != 0 && data.List[data.List.Count - 1].ToString() == "(" &&
-                data.Str != string.Empty)
+            if ((data.Text == "-" && data.List.Count != 0 && data.List[data.List.Count - 1].ToString() == "(" &&
+                data.Str != string.Empty))
             {
                 return 6;
             }

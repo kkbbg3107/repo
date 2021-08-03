@@ -24,7 +24,7 @@ namespace NetCORE_Api.NewModel
         {
             classObj.Num2 = Convert.ToDouble(classObj.Stack.Pop());
             classObj.Num1 = Convert.ToDouble(classObj.Stack.Pop());
-            classObj.Ans = classObj.Num2 / classObj.Num1;
+            classObj.Ans = classObj.Num1 / classObj.Num2;
             classObj.Stack.Push((classObj.Ans.ToString()));
         }
     }

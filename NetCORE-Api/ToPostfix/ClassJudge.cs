@@ -57,7 +57,7 @@ namespace NetCORE_Api.ToPostfix
         /// <returns>是否符合條件</returns>
         public static bool IsPriorFive(ToPostfixData d)
         {
-            return d.Prior == 5 && (d.Stack.Count == 0 || d.Stack.Peek() == "(");
+            return d.Prior == 5 && (d.Stack.Count == 0 || d.Stack.Peek() == "(" || d.Stack.Peek() == ")");
         }
 
         /// <summary>

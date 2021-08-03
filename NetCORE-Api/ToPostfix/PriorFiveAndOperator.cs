@@ -29,7 +29,9 @@ namespace NetCORE_Api.ToPostfix
         /// </summary>
         public void GetPostfix()
         {
+            //_postdata.Stack.Pop().ToString();
             _postdata.PostList.Add(_postdata.Stack.Pop().ToString());
+            //_postdata.Stack.Push(_postdata.Text);
             _postdata.Times--; // 重新回到這個運算子在run一次
             _postdata.RecordLen++; // 記數也要加回去
         }
