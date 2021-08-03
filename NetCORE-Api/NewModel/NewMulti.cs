@@ -7,25 +7,30 @@ using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.NewModel
 {
-    public class AddClass : IPrior, IPostfixToNum
+    public class NewMulti : IPrior
     {
         private ClassObj classObj;
 
-        public AddClass(ClassObj post)
+        public NewMulti(ClassObj post)
         {
             classObj = post;
         }
         public int GetPriority(string c)
         {
-            return 5;
+            return 9;
         }
 
         public void GetNum()
         {
             classObj.Num2 = Convert.ToDouble(classObj.Stack.Pop());
             classObj.Num1 = Convert.ToDouble(classObj.Stack.Pop());
-            classObj.Ans = classObj.Num2 + classObj.Num1;
+            classObj.Ans = classObj.Num1 * classObj.Num2;
             classObj.Stack.Push((classObj.Ans.ToString()));
+        }
+
+        public bool IsOperator()
+        {
+            return true;
         }
     }
 }

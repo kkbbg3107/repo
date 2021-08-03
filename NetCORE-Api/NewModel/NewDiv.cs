@@ -7,11 +7,11 @@ using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.NewModel
 {
-    public class MultiClass : IPrior
+    public class NewDiv : IPrior, IPostfixToNum
     {
         private ClassObj classObj;
 
-        public MultiClass(ClassObj post)
+        public NewDiv(ClassObj post)
         {
             classObj = post;
         }
@@ -24,8 +24,13 @@ namespace NetCORE_Api.NewModel
         {
             classObj.Num2 = Convert.ToDouble(classObj.Stack.Pop());
             classObj.Num1 = Convert.ToDouble(classObj.Stack.Pop());
-            classObj.Ans = classObj.Num1 * classObj.Num2;
+            classObj.Ans = classObj.Num1 / classObj.Num2;
             classObj.Stack.Push((classObj.Ans.ToString()));
+        }
+
+        public bool IsOperator()
+        {
+            return true;
         }
     }
 }

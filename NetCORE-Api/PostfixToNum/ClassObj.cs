@@ -14,6 +14,6 @@ namespace NetCORE_Api.PostfixToNum
         public  double Num1 { get; set; }
         public  double Num2 { get; set; }
         public  double Ans { get; set; }
-        public  Stack<string>? Stack { get; set; }
+        public  Stack<string> Stack { get; set; }
     }
 }

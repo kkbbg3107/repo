@@ -8,6 +8,7 @@ using NetCORE_Api.NewPattern;
 using NetCORE_Api.Operator;
 using NetCORE_Api.PostfixToNum;
 using NetCORE_Api.Priority;
+using NetCORE_Api.Service;
 using NetCORE_Api.ToListServiceData;
 using NetCORE_Api.ToPostfix;
 
@@ -25,30 +26,14 @@ namespace NetCORE_Api
         /// </summary>
         public static Dictionary<string, IAll> dict = new Dictionary<string, IAll>()
         {
-            {"+", new AddClass(classobj)},
-            {"-", new Sub1Class(classobj)},
-            {"*", new MultiClass(classobj)},
-            {"/", new DivvClass(classobj)},
-            {"(", new leftClass(classobj)},
-            {")", new leftClass(classobj)},
+            {"+", new NewPlus(classobj)},
+            {"-", new NewSub(classobj)},
+            {"*", new NewMulti(classobj)},
+            {"/", new NewDiv(classobj)},
+            {"(", new LeftClass(classobj)},
+            {")", new RightClass(classobj)},
 
         };
-
-
-        //public int Priority123(string Text)
-        //{
-        //    var result = 0;
-        //    IAll p = dict[Text];
-        //    if (p is IPrior)
-        //    {
-        //        result = p.GetPriority(Text);
-        //    }
-
-        //    return result;
-        //}
-
-
-
 
         /// <summary>
         /// 優先權判定
@@ -58,25 +43,13 @@ namespace NetCORE_Api
         /// <returns>infix字串</returns>
         public int Priority(string Text)
         {
-            //var dictPriority = new Dictionary<string, IPriority>()
-            //{
-            //    { ")", new RightMarkPriority()},
-            //    { "+", new AddSubPriority()},
-            //    { "-", new AddSubPriority()},
-            //    { "*", new MulDivPriority()},
-            //    { "/", new MulDivPriority()},
-            //    { "(", new LeftPriority()}
-            //};
+      
             var result = 0;
             IAll p = dict[Text];
-            if (p is IPrior)
+            if (p is IPrior prior)
             {
-                result = p.GetPriority(Text);
+                result = prior.GetPriority(Text);
             }
-
-
-            //IPriority _prior = dictPriority[Text];
-            //var result = _prior.GetPriority(Text);
 
             return result;
         }
@@ -139,18 +112,14 @@ namespace NetCORE_Api
         /// <returns>運算子回傳true</returns>
         public static bool IsOperator(string x)
         {
-            var dictionaryOperator = new Dictionary<string, IBoolenOperator>()
-            {
-                {"+", new IsPlus()},
-                {"-", new IsSub()},
-                {"*", new IsMul()},
-                {"/", new IsDiv()}
-            };
-
+           
             if (IsBoolOperatorTrue(x))
             {
-                IBoolenOperator boolOperator = dictionaryOperator[x];
-                boolOperator.IsOperator(x);
+                IAll boolOperator = dict[x];
+                if (boolOperator is IOperator opera)
+                {
+                    opera.IsOperator();
+                }
                 return true;
             }
 
@@ -186,18 +155,13 @@ namespace NetCORE_Api
                 {
                     string text = postfix[j]; // 可支援轉型
 
-                    //var dict = new Dictionary<string, IObject>()
-                    //{
-                    //    {"+", new PlusClass(classobj)},
-                    //    {"-", new SubClass(classobj)},
-                    //    {"*", new MulClass(classobj)},
-                    //    {"/", new DivClass(classobj)},
-                    //};
-
-
                     if (IsBoolOperatorTrue(text))
                     {
-                        dict[text].GetNum();
+                        IAll postNum = dict[text];
+                        if (postNum is IPostfixToNum postnum)
+                        {
+                            postnum.GetNum();
+                        }
                     }
                     else
                     {
@@ -252,7 +216,7 @@ namespace NetCORE_Api
                         {10, new SubMarks(data)},
                         {0, new NumInput(data)},
                     };
-
+                    
                     var iToList = dict_toList[result];
                     iToList.GetResult();
                 }
@@ -267,7 +231,6 @@ namespace NetCORE_Api
                 Console.WriteLine(ex);
             }
 
-            //var res = data.List.Where(x => x != "(" && x != ")").Select(x => x).ToList();
             return data.List;
         }
 

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.NewPattern
 {
-    public interface IPrior : IAll
+    public interface IOperator : IAll
     {
-        int GetPriority(string c);
+        bool IsOperator();
     }
 }

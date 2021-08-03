@@ -7,11 +7,11 @@ using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.NewModel
 {
-    public class Sub1Class : IPrior
+    public class NewSub : IPrior
     {
         private ClassObj classObj;
 
-        public Sub1Class(ClassObj post)
+        public NewSub(ClassObj post)
         {
             classObj = post;
         }
@@ -26,6 +26,11 @@ namespace NetCORE_Api.NewModel
             classObj.Num1 = Convert.ToDouble(classObj.Stack.Pop());
             classObj.Ans = classObj.Num1 - classObj.Num2;
             classObj.Stack.Push((classObj.Ans.ToString()));
+        }
+
+        public bool IsOperator()
+        {
+            return true;
         }
     }
 }

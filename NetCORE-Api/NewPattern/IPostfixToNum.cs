@@ -7,6 +7,6 @@ namespace NetCORE_Api.NewPattern
 {
     public interface IPostfixToNum : IAll
     {
-
+        void GetNum();
     }
 }

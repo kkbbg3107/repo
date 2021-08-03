@@ -7,11 +7,11 @@ using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.NewModel
 {
-    public class leftClass : IPrior
+    public class LeftClass : IPrior
     {
         private ClassObj classObj;
 
-        public leftClass(ClassObj post)
+        public LeftClass(ClassObj post)
         {
             classObj = post;
         }
@@ -22,6 +22,11 @@ namespace NetCORE_Api.NewModel
 
         public void GetNum()
         {
+        }
+
+        public bool IsOperator()
+        {
+            throw new NotImplementedException();
         }
     }
 }

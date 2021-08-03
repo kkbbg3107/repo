@@ -7,8 +7,5 @@ namespace NetCORE_Api.NewPattern
 {
     public interface IAll
     {
-        int GetPriority(string c);
-
-        void GetNum();
     }
 }
