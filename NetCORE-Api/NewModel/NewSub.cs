@@ -7,7 +7,7 @@ using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.NewModel
 {
-    public class NewSub : IPrior
+    public class NewSub : IPrior, IPostfixToNum, IOperator, IToPostfix
     {
         private ClassObj classObj;
 
@@ -31,6 +31,31 @@ namespace NetCORE_Api.NewModel
         public bool IsOperator()
         {
             return true;
+        }
+
+        public void GetPostfix(ClassObj data)
+        {
+            Model m = new Model();
+            data.Prior = GetPriority(data.Text);
+
+            if (data.Stack.Count != 0)
+            {
+                while (m.Priority(data.Str) >= data.Prior) // 9 > 5
+                {
+                    if (data.Stack?.Count != 0)
+                    {
+                        data.PostList.Add(data.Stack.Pop());
+                        data.Stack.TryPeek(out var mark);
+                        data.Str = mark;
+                        if (data.Str == null)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            data.Stack.Push(data.Text);
         }
     }
 }

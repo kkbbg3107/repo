@@ -5,11 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NetCORE_Api.Operator;
 using NetCORE_Api.PostfixToNum;
-using NetCORE_Api.Priority;
 using NetCORE_Api.ToListServiceData;
-using NetCORE_Api.ToPostfix;
 
 namespace NetCORE_Api.Service
 {

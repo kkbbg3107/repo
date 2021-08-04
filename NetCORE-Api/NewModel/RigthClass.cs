@@ -7,7 +7,7 @@ using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.NewModel
 {
-    public class RightClass : IPrior
+    public class RightClass : IPrior, IToPostfix
     {
         private ClassObj classObj;
 
@@ -20,13 +20,14 @@ namespace NetCORE_Api.NewModel
             return -100;
         }
 
-        public void GetNum()
+        public void GetPostfix(ClassObj data)
         {
-        }
+            while (data.Stack.Peek() != "(")
+            {
+                data.PostList.Add(data.Stack.Pop().ToString());
+            }
 
-        public bool IsOperator()
-        {
-            throw new NotImplementedException();
+            data.Stack.Pop();
         }
     }
 }

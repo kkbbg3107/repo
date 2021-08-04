@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic; 
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.RenderTree;
+using NetCORE_Api.NewList;
 using NetCORE_Api.NewModel;
 using NetCORE_Api.NewPattern;
-using NetCORE_Api.Operator;
 using NetCORE_Api.PostfixToNum;
-using NetCORE_Api.Priority;
 using NetCORE_Api.Service;
 using NetCORE_Api.ToListServiceData;
-using NetCORE_Api.ToPostfix;
 
 namespace NetCORE_Api
 {
@@ -34,6 +33,34 @@ namespace NetCORE_Api
             {")", new RightClass(classobj)},
 
         };
+
+        /// <summary>
+        /// 公用屬性
+        /// </summary>
+        public static Data data = new Data();
+
+        public static Dictionary<string, IApi> dict_list = new Dictionary<string, IApi>()
+        {
+            {"+", new PlusToList(data)},
+            {"-", new SubToList(data)},
+            {"*", new MultiToList(data)},
+            {"/", new DivToList(data)},
+            {"(", new LeftToList(data)},
+            {")", new RightToList(data)},
+            {"0", new ZeroToList(data)},
+            {"1", new OneToList(data)},
+            {"2", new TwoToList(data)},
+            {"3", new ThreeToList(data)},
+            {"4", new FourToList(data)},
+            {"5", new FiveToList(data)},
+            {"6", new SixToList(data)},
+            {"7", new SevenToList(data)},
+            {"8", new EightToList(data)},
+            {"9", new NineToList(data)},
+            {".", new DotToList(data)},
+        };
+
+
 
         /// <summary>
         /// 優先權判定
@@ -143,7 +170,6 @@ namespace NetCORE_Api
         /// <returns>結果數值</returns>
         public string PostfixToNum(List<string> postfix)
         {
-            //ClassObj classobj = new ClassObj();
             classobj.Stack = new Stack<string>();
             classobj.Ans = 0;
             classobj.Num1 = 0;
@@ -186,8 +212,7 @@ namespace NetCORE_Api
         /// <returns>依照每個符號定義的列表</returns>
         public List<string> ToListService(string infix)
         {
-            Use use = new Use();
-            Data data = new Data();
+     
             data.List = new List<string>();
             data.Stack = new Stack<string>();
             data.Container = string.Empty;
@@ -199,31 +224,16 @@ namespace NetCORE_Api
                 {
                     data.Text = infix[i].ToString();
 
-                    var result = use.GetEnum(data);
-
-                    var dict_toList = new Dictionary<int, IToList>()
+                    IApi ListService = dict_list[data.Text];
+                    if (ListService is IToListService toListService)
                     {
-                        {1, new leftBrackets(data)},
-                        {2, new RightAndStackNotZero(data)},
-                        {3, new RightBracketAndStrNotNull(data)},
-                        {11, new RightBrackets(data)},
-                        {4, new PlusDivMulAndStrNotNull(data)},
-                        {5, new PlusDivMul(data)},
-                        {6, new SubAllFliter(data)},
-                        {7, new SubLeftBrackets(data)},
-                        {8, new SubRightBrackets(data)},
-                        {9, new SubCountZero(data)},
-                        {10, new SubMarks(data)},
-                        {0, new NumInput(data)},
-                    };
-                    
-                    var iToList = dict_toList[result];
-                    iToList.GetResult();
+                        toListService.GetList();
+                    }
                 }
 
-                if (data.Str != string.Empty)
+                if (data.Container != string.Empty)
                 {
-                    data.List.Add(data.Str);
+                    data.List.Add(data.Container);
                 }
             }
             catch (Exception ex)
@@ -245,66 +255,37 @@ namespace NetCORE_Api
         /// <returns>後序表達式集合</returns>
         public List<string> ToPostfix(List<string> infix)
         {
-            ToPostfixData data = new ToPostfixData();
-            ClassJudge judge = new ClassJudge();
+            ClassObj data = new ClassObj();
             data.Stack = new Stack<string>();
-            data.Temp = string.Empty;  // 臨時變數 => 為了區分數字>10 和 是否有小數點  一碰到運算子就把前面的數字合併 塞進postfix 
             data.PostList = new List<string>(); // 後序表達示
-            data.RecordLen = infix.Count; // 紀錄中序長度
+            data.Str = string.Empty;
+            var str = data.Str;
 
             try
             {
-                for (data.Times = 0; data.Times < infix.Count; data.Times++)
+                for (int i = 0; i < infix.Count; i++)
                 {
+                    data.Stack.TryPeek(out str);
+                    data.Str = str;
+                    data.Text = infix[i];
 
-                    var Text = infix[data.Times];
-                    data.Text = Text;
-                    if (Text == "+" || Text == "-" || Text == "*" || Text == "/" || Text == "(" || Text == ")")
+                    if (IsBoolTrue(data.Text))
                     {
-                        int prior = Priority(Text); // 賦予優先權
-                        data.Prior = prior;
-
-                        if (data.Temp != string.Empty)
+                        IAll toPostfix = dict[data.Text];
+                        if (toPostfix is IToPostfix postfix)
                         {
-                            data.PostList.Add(data.Temp);
-                            data.Temp = string.Empty;
+                            postfix.GetPostfix(data);
                         }
-                        var result = judge.GetToken(data);
-
-                        var dict_ToPotfix = new Dictionary<int, IToPostfix>()
-                        {
-                            {1, new PriorNegativeOne(data)},
-                            {2, new PriorFiveAndCountZeroLeftBrackets(data)},
-                            {3, new PriorFiveAndOperator(data)},
-                            {4, new PriorHundred(data)},
-                            {5, new PriorNineAndCountZero(data)},
-                            {6, new PriorNineMulAndDiv(data)},
-                            {7, new PriorNine(data)},
-                        };
-
-                        var iToPostfix = dict_ToPotfix[result];
-                        iToPostfix.GetPostfix();
                     }
                     else
                     {
-                        data.Temp += data.Text;
+                        data.PostList.Add(data.Text);
                     }
+                }
 
-                    data.RecordLen--; // 每循環一次 記數-1 
-
-                    if (data.RecordLen == 0)
-                    {
-                        while (data.Stack.Count != 0)
-                        {
-                            if (data.Temp != string.Empty)
-                            {
-                                data.PostList.Add(data.Temp);
-                                data.Temp = string.Empty;
-                            }
-
-                            data.PostList.Add(data.Stack.Pop().ToString());
-                        }
-                    }
+                while (data.Stack.Count != 0)
+                {
+                   data.PostList.Add(data.Stack.Pop());
                 }
             }
             catch (Exception ex)
@@ -312,9 +293,13 @@ namespace NetCORE_Api
                 Console.WriteLine(ex);
             }
 
-
-            var res = data.PostList.Where(x => x != "(" && x != ")").Select(x => x).ToList();
+            var res = data.PostList.Where(x => x != null).Select(x => x).ToList();
             return res;
+        }
+
+        public static bool IsBoolTrue(string x)
+        {
+            return x == "+" || x == "-" || x == "/" || x == "*" || x == "(" || x ==")";
         }
     }
 }
