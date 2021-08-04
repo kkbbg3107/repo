@@ -10,7 +10,6 @@ namespace NetCORE_Api.ToListServiceData
     /// </summary>
     public class Data
     {
-        public string Str { get; set; }
         public string Container { get; set; }
         public List<string> List { get; set; }
         public Stack<string> Stack { get; set; }

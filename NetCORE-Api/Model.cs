@@ -35,34 +35,6 @@ namespace NetCORE_Api
         };
 
         /// <summary>
-        /// 公用屬性
-        /// </summary>
-        public static Data data = new Data();
-
-        public static Dictionary<string, IApi> dict_list = new Dictionary<string, IApi>()
-        {
-            {"+", new PlusToList(data)},
-            {"-", new SubToList(data)},
-            {"*", new MultiToList(data)},
-            {"/", new DivToList(data)},
-            {"(", new LeftToList(data)},
-            {")", new RightToList(data)},
-            {"0", new ZeroToList(data)},
-            {"1", new OneToList(data)},
-            {"2", new TwoToList(data)},
-            {"3", new ThreeToList(data)},
-            {"4", new FourToList(data)},
-            {"5", new FiveToList(data)},
-            {"6", new SixToList(data)},
-            {"7", new SevenToList(data)},
-            {"8", new EightToList(data)},
-            {"9", new NineToList(data)},
-            {".", new DotToList(data)},
-        };
-
-
-
-        /// <summary>
         /// 優先權判定
         /// </summary>
         /// <param name="priority">優先權大小</param>
@@ -164,6 +136,16 @@ namespace NetCORE_Api
         }
 
         /// <summary>
+        /// 判斷是否為以下字串
+        /// </summary>
+        /// <param name="x">傳入的值</param>
+        /// <returns>為運算子回傳true</returns>
+        public static bool IsBoolTrue(string x)
+        {
+            return x == "+" || x == "-" || x == "/" || x == "*" || x == "(" || x == ")";
+        }
+
+        /// <summary>
         /// 後序轉運算結果
         /// </summary>
         /// <param name="postfix">後序表達式</param>
@@ -212,28 +194,33 @@ namespace NetCORE_Api
         /// <returns>依照每個符號定義的列表</returns>
         public List<string> ToListService(string infix)
         {
-     
-            data.List = new List<string>();
-            data.Stack = new Stack<string>();
-            data.Container = string.Empty;
-            data.Str = string.Empty;
+
+            classobj.PostList = new List<string>();
+            classobj.Stack = new Stack<string>();
+            classobj.Str = string.Empty;
 
             try
             {
                 for (int i = 0; i < infix.Length; i++)
                 {
-                    data.Text = infix[i].ToString();
-
-                    IApi ListService = dict_list[data.Text];
-                    if (ListService is IToListService toListService)
+                    classobj.Text = infix[i].ToString();
+                    if (IsBoolTrue(classobj.Text))
                     {
-                        toListService.GetList();
+                        IAll ListService = dict[classobj.Text];
+                        if (ListService is IToListService toListService)
+                        {
+                            toListService.GetList();
+                        }
+                    }
+                    else
+                    {
+                        classobj.Str += classobj.Text;
                     }
                 }
 
-                if (data.Container != string.Empty)
+                if (classobj.Str != string.Empty)
                 {
-                    data.List.Add(data.Container);
+                    classobj.PostList.Add(classobj.Str);
                 }
             }
             catch (Exception ex)
@@ -241,7 +228,7 @@ namespace NetCORE_Api
                 Console.WriteLine(ex);
             }
 
-            return data.List;
+            return classobj.PostList;
         }
 
         /// <summary>
@@ -295,11 +282,6 @@ namespace NetCORE_Api
 
             var res = data.PostList.Where(x => x != null).Select(x => x).ToList();
             return res;
-        }
-
-        public static bool IsBoolTrue(string x)
-        {
-            return x == "+" || x == "-" || x == "/" || x == "*" || x == "(" || x ==")";
         }
     }
 }

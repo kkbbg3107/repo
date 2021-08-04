@@ -7,7 +7,7 @@ using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.NewModel
 {
-    public class NewSub : IPrior, IPostfixToNum, IOperator, IToPostfix
+    public class NewSub : IPrior, IPostfixToNum, IOperator, IToPostfix, IToListService
     {
         private ClassObj classObj;
 
@@ -56,6 +56,22 @@ namespace NetCORE_Api.NewModel
             }
 
             data.Stack.Push(data.Text);
+        }
+
+        public void GetList()
+        {
+            classObj.PostList.Add(classObj.Str);
+            classObj.Str = string.Empty;
+            classObj.PostList.Remove("");
+
+            if (classObj.PostList[classObj.PostList.Count - 1] == "(")
+            {
+                classObj.Str += classObj.Text;
+            }
+            else
+            {
+                classObj.PostList.Add(classObj.Text);
+            }
         }
     }
 }

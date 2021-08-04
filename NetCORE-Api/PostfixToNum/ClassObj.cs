@@ -20,5 +20,7 @@ namespace NetCORE_Api.PostfixToNum
         public int Prior { get; set; }
         public string Text { get; set; }
         public string Str { get; set; }
+
+
     }
 }

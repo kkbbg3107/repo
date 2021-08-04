@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NetCORE_Api.NewPattern
 {
-    public interface IToListService : IApi
+    public interface IToListService : IAll
     {
         void GetList();
     }

@@ -3,32 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NetCORE_Api.NewPattern;
+using NetCORE_Api.PostfixToNum;
 using NetCORE_Api.ToListServiceData;
 
 namespace NetCORE_Api.NewList
 {
     public class SubToList : IToListService
     {
-        private Data _data;
+        private ClassObj _data;
 
-        public SubToList(Data data)
+        public SubToList(ClassObj data)
         {
             _data = data;
         }
 
         public void GetList()
         {
-            _data.List.Add(_data.Container);
-            _data.Container = string.Empty;
-            _data.List.Remove("");
+            _data.PostList.Add(_data.Str);
+            _data.Str = string.Empty;
+            _data.PostList.Remove("");
 
-            if (_data.List[_data.List.Count - 1] == "(")
+            if (_data.PostList[_data.PostList.Count - 1] == "(")
             {
-                _data.Container += _data.Text;
+                _data.Str += _data.Text;
             }
             else
             {
-                _data.List.Add(_data.Text);
+                _data.PostList.Add(_data.Text);
             }
         }
     }
