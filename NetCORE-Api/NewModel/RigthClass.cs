@@ -15,6 +15,14 @@ namespace NetCORE_Api.NewModel
         {
             classObj = post;
         }
+
+        private int _priority;
+        public int Priority
+        {
+            get { return _priority; }
+            set { _priority = -100; }
+        }
+
         public int GetPriority(string c)
         {
             return -100;

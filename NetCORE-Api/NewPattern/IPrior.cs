@@ -7,6 +7,6 @@ namespace NetCORE_Api.NewPattern
 {
     public interface IPrior : IAll
     {
-        int GetPriority(string c);
+        int Priority { get; set; }
     }
 }

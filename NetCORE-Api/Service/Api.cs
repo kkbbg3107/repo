@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NetCORE_Api.PostfixToNum;
-using NetCORE_Api.ToListServiceData;
 
 namespace NetCORE_Api.Service
 {

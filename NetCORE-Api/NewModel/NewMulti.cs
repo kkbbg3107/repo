@@ -15,9 +15,12 @@ namespace NetCORE_Api.NewModel
         {
             classObj = post;
         }
-        public int GetPriority(string c)
+
+        private int _priority;
+        public int Priority
         {
-            return 9;
+            get { return _priority; }
+            set { _priority = 9; }
         }
 
         public void GetNum()
@@ -35,7 +38,7 @@ namespace NetCORE_Api.NewModel
 
         public void GetPostfix(ClassObj data)
         {
-            data.Prior = GetPriority(data.Text);
+            data.Prior = Priority;
             data.Stack.Push(data.Text);
         }
 

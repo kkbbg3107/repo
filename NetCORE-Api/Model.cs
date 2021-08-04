@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.RenderTree;
-using NetCORE_Api.NewList;
 using NetCORE_Api.NewModel;
 using NetCORE_Api.NewPattern;
 using NetCORE_Api.PostfixToNum;
 using NetCORE_Api.Service;
-using NetCORE_Api.ToListServiceData;
 
 namespace NetCORE_Api
 {
@@ -47,7 +45,7 @@ namespace NetCORE_Api
             IAll p = dict[Text];
             if (p is IPrior prior)
             {
-                result = prior.GetPriority(Text);
+                result = prior.Priority;
             }
 
             return result;

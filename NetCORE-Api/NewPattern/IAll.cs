@@ -7,5 +7,6 @@ namespace NetCORE_Api.NewPattern
 {
     public interface IAll
     {
+
     }
 }
