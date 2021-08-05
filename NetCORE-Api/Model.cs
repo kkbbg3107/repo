@@ -110,7 +110,8 @@ namespace NetCORE_Api
 
                         s.Push(temp);
                     }
-                    else
+                    
+                    if (!IsOperator(postfix[i]))
                     {
                         s.Push(postfix[i] + string.Empty);
                     }
@@ -164,6 +165,15 @@ namespace NetCORE_Api
         }
 
         /// <summary>
+        /// 判斷是否為以下字串
+        /// </summary>
+        /// <param name="x">接收到的字串</param>
+        /// <returns>是否包含該字串</returns>
+        public static bool IsBoolTrue(string x)
+        {
+            return x == "+" || x == "-" || x == "/" || x == "*" || x == "(" || x == ")";
+        }
+        /// <summary>
         /// 後序轉運算結果
         /// </summary>
         /// <param name="postfix">後序表達式</param>
@@ -189,7 +199,8 @@ namespace NetCORE_Api
                             postnum.GetNum();
                         }
                     }
-                    else
+                    
+                    if (!IsBoolOperatorTrue(text))
                     {
                         classobj.Stack.Push(text);
                     }
@@ -277,7 +288,8 @@ namespace NetCORE_Api
                             postfix.GetPostfix(data);
                         }
                     }
-                    else
+                    
+                    if (!IsBoolTrue(data.Text))
                     {
                         data.PostList.Add(data.Text);
                     }
@@ -295,11 +307,6 @@ namespace NetCORE_Api
 
             var res = data.PostList.Where(x => x != null).Select(x => x).ToList();
             return res;
-        }
-
-        public static bool IsBoolTrue(string x)
-        {
-            return x == "+" || x == "-" || x == "/" || x == "*" || x == "(" || x ==")";
         }
     }
 }
