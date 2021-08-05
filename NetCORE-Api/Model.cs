@@ -80,7 +80,8 @@ namespace NetCORE_Api
 
                         s.Push(temp);
                     }
-                    else
+                    
+                    if (!IsOperator(postfix[i]))
                     {
                         s.Push(postfix[i] + string.Empty);
                     }
@@ -169,7 +170,8 @@ namespace NetCORE_Api
                             postnum.GetNum();
                         }
                     }
-                    else
+                    
+                    if (!IsBoolOperatorTrue(text))
                     {
                         classobj.Stack.Push(text);
                     }
@@ -210,7 +212,8 @@ namespace NetCORE_Api
                             toListService.GetList();
                         }
                     }
-                    else
+                    
+                    if (!IsBoolTrue(classobj.Text))
                     {
                         classobj.Str += classobj.Text;
                     }
@@ -262,7 +265,8 @@ namespace NetCORE_Api
                             postfix.GetPostfix(data);
                         }
                     }
-                    else
+                    
+                    if (!IsBoolTrue(data.Text))
                     {
                         data.PostList.Add(data.Text);
                     }
