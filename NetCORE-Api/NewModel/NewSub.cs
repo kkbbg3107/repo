@@ -21,10 +21,10 @@ namespace NetCORE_Api.NewModel
         /// 建立建構子
         /// </summary>
         /// <param name="post">帶入外部物件</param>
-        public NewSub(ClassObj post)
-        {
-            classObj = post;
-        }
+        //public NewSub(ClassObj post)
+        //{
+        //    classObj = post;
+        //}
 
         /// <summary>
         /// 建立私有欄位

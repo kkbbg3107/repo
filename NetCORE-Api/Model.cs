@@ -14,21 +14,17 @@ namespace NetCORE_Api
     public class Model
     {
         /// <summary>
-        /// 公用屬性
-        /// </summary>
-        public static ClassObj classobj = new ClassObj();
-
-        /// <summary>
         /// 靜態字典
         /// </summary>
         public static Dictionary<string, IAll> dict = new Dictionary<string, IAll>()
         {
-            {"+", new NewPlus(classobj)},
-            {"-", new NewSub(classobj)},
-            {"*", new NewMulti(classobj)},
-            {"/", new NewDiv(classobj)},
-            {"(", new LeftClass(classobj)},
-            {")", new RightClass(classobj)},
+            {"+", new NewPlus()},
+            {"-", new NewSub()},
+            {"*", new NewMulti()},
+            {"/", new NewDiv()},
+            {"(", new LeftClass()},
+            {")", new RightClass()},
+            
 
         };
 
@@ -151,6 +147,7 @@ namespace NetCORE_Api
         /// <returns>結果數值</returns>
         public string PostfixToNum(List<string> postfix)
         {
+            ClassObj classobj = new ClassObj();
             classobj.Stack = new Stack<string>();
             classobj.Ans = 0;
             classobj.Num1 = 0;
@@ -194,7 +191,7 @@ namespace NetCORE_Api
         /// <returns>依照每個符號定義的列表</returns>
         public List<string> ToListService(string infix) // 切分成字元集合
         {
-
+            ClassObj classobj = new ClassObj();
             classobj.PostList = new List<string>();
             classobj.Stack = new Stack<string>();
             classobj.Str = string.Empty;
@@ -204,24 +201,8 @@ namespace NetCORE_Api
                 for (int i = 0; i < infix.Length; i++)
                 {
                     classobj.Text = infix[i].ToString();
-                    if (IsBoolTrue(classobj.Text))
-                    {
-                        IAll ListService = dict[classobj.Text];
-                        if (ListService is IToListService toListService)
-                        {
-                            toListService.GetList();
-                        }
-                    }
-                    
-                    if (!IsBoolTrue(classobj.Text))
-                    {
-                        classobj.Str += classobj.Text;
-                    }
-                }
 
-                if (classobj.Str != string.Empty)
-                {
-                    classobj.PostList.Add(classobj.Str);
+                    classobj.PostList.Add(classobj.Text);
                 }
             }
             catch (Exception ex)
@@ -257,19 +238,14 @@ namespace NetCORE_Api
                     data.Str = str;
                     data.Text = infix[i];
 
-                    if (IsBoolTrue(data.Text))
+                    IAll toPostfix = dict[data.Text];
+                    if (toPostfix is IToPostfix postfix)
                     {
-                        IAll toPostfix = dict[data.Text];
-                        if (toPostfix is IToPostfix postfix)
-                        {
-                            postfix.GetPostfix(data);
-                        }
+                        postfix.GetPostfix(data);
                     }
-                    
-                    if (!IsBoolTrue(data.Text))
-                    {
-                        data.PostList.Add(data.Text);
-                    }
+
+                  
+                    data.PostList.Add(data.Text);
                 }
 
                 while (data.Stack.Count != 0)

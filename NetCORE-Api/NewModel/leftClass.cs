@@ -18,15 +18,6 @@ namespace NetCORE_Api.NewModel
         private ClassObj classObj;
 
         /// <summary>
-        /// 建立建構子
-        /// </summary>
-        /// <param name="post">帶入的物件</param>
-        public LeftClass(ClassObj post)
-        {
-            classObj = post;
-        }
-
-        /// <summary>
         /// 優先權私有欄位
         /// </summary>
         private int _priority;
