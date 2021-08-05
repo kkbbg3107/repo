@@ -192,7 +192,7 @@ namespace NetCORE_Api
         /// </summary>
         /// <param name="infix">計算機輸入的算式</param>
         /// <returns>依照每個符號定義的列表</returns>
-        public List<string> ToListService(string infix)
+        public List<string> ToListService(string infix) // 切分成字元集合
         {
 
             classobj.PostList = new List<string>();
@@ -241,7 +241,7 @@ namespace NetCORE_Api
         /// </summary>
         /// <param name="infix"></param>
         /// <returns>後序表達式集合</returns>
-        public List<string> ToPostfix(List<string> infix)
+        public List<string> ToPostfix(List<string> infix) // 到這邊在做字元重組 與 運算
         {
             ClassObj data = new ClassObj();
             data.Stack = new Stack<string>();

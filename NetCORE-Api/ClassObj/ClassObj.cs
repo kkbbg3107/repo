@@ -20,6 +20,15 @@ namespace NetCORE_Api.PostfixToNum
         public string Text { get; set; }
         public string Str { get; set; }
 
+        public ClassObja A { get; set; }
 
     }
+
+    public class ClassObja
+    {
+        public int Prior { get; set; }
+        public string Text { get; set; }
+        public string Str { get; set; }
+    }
+
 }
