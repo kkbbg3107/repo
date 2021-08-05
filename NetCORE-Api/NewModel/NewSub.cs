@@ -98,14 +98,24 @@ namespace NetCORE_Api.NewModel
             classObj.Str = string.Empty;
             classObj.PostList.Remove("");
 
-            if (classObj.PostList[classObj.PostList.Count - 1] == "(") // 負號
+            if (IsNegetive()) // 負號
             {
                 classObj.Str += classObj.Text;
             }
-            else
+            
+            if (!IsNegetive())
             {
                 classObj.PostList.Add(classObj.Text); // 減號
             }
+        }
+
+        /// <summary>
+        /// 判斷是否為負號
+        /// </summary>
+        /// <returns></returns>
+        public bool IsNegetive()
+        {
+            return classObj.PostList[classObj.PostList.Count - 1] == "(";
         }
     }
 }
