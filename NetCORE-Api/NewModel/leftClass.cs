@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NetCORE_Api.ClassObj;
 using NetCORE_Api.NewPattern;
-using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.NewModel
 {
     /// <summary>
     /// 左括號實作方法
     /// </summary>
-    public class LeftClass : IPrior, IToPostfix, IToListService
+    public class LeftClass : IPrior, IToPostfix
     {
-        /// <summary>
-        /// 建立屬性
-        /// </summary>
-        private ClassObj classObj;
-
         /// <summary>
         /// 優先權私有欄位
         /// </summary>
@@ -31,24 +26,18 @@ namespace NetCORE_Api.NewModel
             set { _priority = -1; }
         }
 
+        public int GetPriority(string text)
+        {
+            return -1;
+        }
+
         /// <summary>
         /// 取得後序表達式
         /// </summary>
         /// <param name="data">帶入的物件</param>
-        public void GetPostfix(ClassObj data)
+        public void GetPostfix(ClassObject data)
         {
             data.Stack.Push(data.Text);
-        }
-
-        /// <summary>
-        /// 取得中序集合
-        /// </summary>
-        public void GetList()
-        {
-            classObj.PostList.Add(classObj.Str);
-            classObj.Str = string.Empty;
-            classObj.PostList.Remove("");
-            classObj.PostList.Add(classObj.Text);
         }
     }
 }

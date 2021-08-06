@@ -2,30 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NetCORE_Api.ClassObj;
 using NetCORE_Api.NewPattern;
-using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.NewModel
 {
     /// <summary>
     /// 加法實作方法
     /// </summary>
-    public class NewSub : IPrior, IPostfixToNum, IOperator, IToPostfix, IToListService
+    public class NewSub : IPrior, IPostfixToNum, IOperator, IToPostfix
     {
-        /// <summary>
-        /// 建立外部物件屬性
-        /// </summary>
-        private ClassObj classObj;
-
-        /// <summary>
-        /// 建立建構子
-        /// </summary>
-        /// <param name="post">帶入外部物件</param>
-        //public NewSub(ClassObj post)
-        //{
-        //    classObj = post;
-        //}
-
         /// <summary>
         /// 建立私有欄位
         /// </summary>
@@ -40,15 +26,20 @@ namespace NetCORE_Api.NewModel
             set { _priority = 5; }
         }
 
+        public int GetPriority(string text)
+        {
+            return 5;
+        }
+
         /// <summary>
         /// 取得數值
         /// </summary>
-        public void GetNum()
+        public void GetNum(ResultData resultData)
         {
-            classObj.Num2 = Convert.ToDouble(classObj.Stack.Pop());
-            classObj.Num1 = Convert.ToDouble(classObj.Stack.Pop());
-            classObj.Ans = classObj.Num1 - classObj.Num2;
-            classObj.Stack.Push((classObj.Ans.ToString()));
+            resultData.Num2 = Convert.ToDouble(resultData.Stack.Pop());
+            resultData.Num1 = Convert.ToDouble(resultData.Stack.Pop());
+            resultData.Ans = resultData.Num1 - resultData.Num2;
+            resultData.Stack.Push((resultData.Ans.ToString()));
         }
 
         /// <summary>
@@ -64,58 +55,39 @@ namespace NetCORE_Api.NewModel
         /// 取得後序表達式
         /// </summary>
         /// <param name="data">外部物件為參數</param>
-        public void GetPostfix(ClassObj data)
+        public void GetPostfix(ClassObject data)
         {
             Model m = new Model();
-            data.Prior = Priority;
+            data.Prior = GetPriority(data.Text);
 
-            if (data.Stack.Count != 0)
+            if (data.List[data.Times - 1] == "(") // 負數
             {
-                while (m.Priority(data.Str) >= data.Prior) // 9 > 5
+                data.Container += data.Text;
+            }
+            else
+            {
+                data.PostList.Add(data.Container);
+                data.Container = string.Empty;
+                data.PostList.Remove("");
+
+                if (data.Stack.Count != 0)
                 {
-                    if (data.Stack?.Count != 0)
+                    while (m.Priority(data.Str) >= data.Prior) // 9 > 5
                     {
-                        data.PostList.Add(data.Stack.Pop());
-                        data.Stack.TryPeek(out var mark);
-                        data.Str = mark;
-                        if (data.Str == null)
+                        if (data.Stack?.Count != 0)
                         {
-                            break;
+                            data.PostList.Add(data.Stack.Pop());
+                            data.Stack.TryPeek(out var mark);
+                            data.Str = mark;
+                            if (data.Str == null)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
+                data.Stack.Push(data.Text);
             }
-
-            data.Stack.Push(data.Text);
-        }
-
-        /// <summary>
-        /// 取得中序集合
-        /// </summary>
-        public void GetList()
-        {
-            classObj.PostList.Add(classObj.Str);
-            classObj.Str = string.Empty;
-            classObj.PostList.Remove("");
-
-            if (IsNegetive()) // 負號
-            {
-                classObj.Str += classObj.Text;
-            }
-            
-            if (!IsNegetive())
-            {
-                classObj.PostList.Add(classObj.Text); // 減號
-            }
-        }
-
-        /// <summary>
-        /// 判斷是否為負號
-        /// </summary>
-        /// <returns></returns>
-        public bool IsNegetive()
-        {
-            return classObj.PostList[classObj.PostList.Count - 1] == "(";
         }
     }
 }

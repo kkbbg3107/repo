@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NetCORE_Api.PostfixToNum;
 
 namespace NetCORE_Api.Service
 {
@@ -23,8 +22,7 @@ namespace NetCORE_Api.Service
             Calculate c = new Calculate();
             c.Label = Record.Lbl;
 
-            var p = model.ToListService(c.Label);
-            var postList = model.ToPostfix(p); // 後序表達式
+            var postList = model.ToPostfix(c.Label); // 後序表達式
 
             Response data = new Response();
             

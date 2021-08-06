@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NetCORE_Api.ClassObj;
 
 namespace NetCORE_Api.NewPattern
 {
@@ -10,6 +11,6 @@ namespace NetCORE_Api.NewPattern
     /// </summary>
     public interface IPostfixToNum : IAll
     {
-        void GetNum();
+        void GetNum(ResultData resultData);
     }
 }
