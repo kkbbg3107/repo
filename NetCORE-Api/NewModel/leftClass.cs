@@ -12,23 +12,17 @@ namespace NetCORE_Api.NewModel
     /// </summary>
     public class LeftClass : IPrior, IToPostfix
     {
-        /// <summary>
-        /// 優先權私有欄位
-        /// </summary>
-        private int _priority;
+        ///// <summary>
+        ///// 優先權私有欄位
+        ///// </summary>
+        //private int _priority;
 
         /// <summary>
         /// 封裝好優先權
         /// </summary>
         public int Priority
         {
-            get { return _priority; }
-            set { _priority = -1; }
-        }
-
-        public int GetPriority(string text)
-        {
-            return -1;
+            get { return -1; }
         }
 
         /// <summary>

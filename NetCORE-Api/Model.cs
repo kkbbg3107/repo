@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic; 
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.RenderTree;
 using NetCORE_Api.ClassObj;
 using NetCORE_Api.NewModel;
 using NetCORE_Api.NewModel.NumModel;
@@ -19,6 +18,7 @@ namespace NetCORE_Api
         /// </summary>
         public static Dictionary<string, IAll> dict_button = new Dictionary<string, IAll>()
         {
+            {"%", new ModClass()},
             {"+", new NewPlus()},
             {"-", new NewSub()},
             {"*", new NewMulti()},
@@ -51,7 +51,7 @@ namespace NetCORE_Api
             IAll p = dict_button[Text];
             if (p is IPrior prior)
             {
-                result = prior.GetPriority(Text);
+                result = prior.Priority;
             }
 
             return result;
@@ -64,68 +64,40 @@ namespace NetCORE_Api
         /// <returns>前序表達式</returns>
         public string PostfixToPrefix(List<string> postfix)
         {
-            Stack s = new Stack();
-            string res = string.Empty;
-            string op1 = string.Empty;
-            string op2 = string.Empty;
-            string temp = string.Empty;
+            PrefixObj prefixObj = new PrefixObj();
+            prefixObj.Stack = new Stack();
+            prefixObj.res = string.Empty;
+            prefixObj.op1 = string.Empty;
+            prefixObj.op2 = string.Empty;
+            prefixObj.temp = string.Empty;
+
             try
             {
                 for (int i = 0; i < postfix.Count; i++)
                 {
-                    string text = postfix[i];
-
-                    if (IsOperator(text))
+                    prefixObj.text = postfix[i];
+                    NumObj numObj = new NumObj(postfix[i]);
+                    IAll prefix = dict_button[numObj.Key];
+                    if (prefix is IPrefix getPrefix)
                     {
-                        op1 = (string) s.Peek();
-                        s.Pop();
-                        op2 = (string) s.Peek();
-                        s.Pop();
-
-                        temp = postfix[i] + op2 + op1;
-
-                        s.Push(temp);
-                    }
-                    else
-                    {
-                        s.Push(postfix[i] + string.Empty);
+                        getPrefix.GetPrefix(prefixObj);
                     }
                 }
 
                 string ans = string.Empty;
-                while (s.Count > 0)
+                while (prefixObj.Stack.Count > 0)
                 {
-                    ans += s.Pop();
+                    ans += prefixObj.Stack.Pop();
                 }
 
-                res = ans;
+                prefixObj.res = ans;
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
 
-            return res;
-        }
-
-        /// <summary>
-        /// 判別運算子
-        /// </summary>
-        /// <param name="x">輸入的數</param>
-        /// <returns>運算子回傳true</returns>
-        public static bool IsOperator(string x)
-        {
-            if (x == "+" || x == "-" || x == "*" || x== "/")
-            {
-                IAll boolOperator = dict_button[x];
-                if (boolOperator is IOperator opera)
-                {
-                    opera.IsOperator();
-                }
-                return true;
-            }
-            
-            return false;
+            return prefixObj.res;
         }
 
         /// <summary>
@@ -212,6 +184,7 @@ namespace NetCORE_Api
 
                 data.PostList.Add(data.Container);
                 data.Container = string.Empty;
+                data.PostList.Remove("");
                 while (data.Stack.Count != 0)
                 {
                    data.PostList.Add(data.Stack.Pop());

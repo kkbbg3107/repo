@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NetCORE_Api.ClassObj;
 
 namespace NetCORE_Api.NewPattern
 {
-    /// <summary>
-    /// 優先權大小
-    /// </summary>
-    public interface IPrior : IAll
+    public interface IPrefix
     {
-        int Priority { get; }
+        void GetPrefix(PrefixObj prefixObj);
     }
 }

@@ -61,6 +61,7 @@ namespace WebApi
                 {"7", new Seven()},
                 {"8", new Eight()},
                 {"9", new Nine()},
+                {"%", new Mod()}
             });
         }
 

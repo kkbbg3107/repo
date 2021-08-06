@@ -12,23 +12,17 @@ namespace NetCORE_Api.NewModel
     /// </summary>
     public class RightClass : IPrior, IToPostfix
     {
-        /// <summary>
-        /// 優先權私有欄位
-        /// </summary>
-        private int _priority;
+        ///// <summary>
+        ///// 優先權私有欄位
+        ///// </summary>
+        //private int _priority;
 
         /// <summary>
         /// 封裝好優先權
         /// </summary>
         public int Priority
         {
-            get { return _priority; }
-            set { _priority = -100; }
-        }
-
-        public int GetPriority(string text)
-        {
-            return -100;
+            get { return -100; }
         }
 
         /// <summary>
@@ -37,6 +31,9 @@ namespace NetCORE_Api.NewModel
         /// <param name="data">帶入的物件</param>
         public void GetPostfix(ClassObject data)
         {
+            data.PostList.Add(data.Container);
+            data.Container = string.Empty;
+            data.PostList.Remove("");
             while (data.Stack.Peek() != "(")
             {
                 data.PostList.Add(data.Stack.Pop().ToString());
